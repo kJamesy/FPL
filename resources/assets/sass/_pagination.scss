@@ -1,0 +1,68 @@
+.pagination {
+  li {
+    a {
+      position: relative;
+      display: block;
+      padding: .5rem .75rem;
+      margin-left: -1px;
+      line-height: 1.25;
+      color: $form-control_color;
+      background-color: $teal;
+      border: 1px solid $white;
+      border-top-color: $teal;
+      border-bottom-color: $teal;
+
+      &:hover {
+        text-decoration: none;
+        background: $blue;
+        color: $white;
+        border-top-color: $blue;
+        border-bottom-color: $blue;
+      }
+    }
+
+    &:first-child {
+      a {
+        margin-left: 0;
+        border-left: 0;
+      }
+    }
+
+    &:last-child {
+      a {
+        margin-left: 0;
+        border-right: 0;
+      }
+    }
+
+    &.active {
+      a {
+        pointer-events: none;
+        background: $blue;
+        color: $white;
+        border-top-color: $blue;
+        border-bottom-color: $blue;
+      }
+    }
+
+    &.disabled {
+      //margin-left: -1px;
+
+      span {
+        background-color: #FFF;
+        border: 1px solid #DDD;
+        display: block;
+        padding: .5rem .75rem;
+        line-height: 1.25;
+
+        span {
+          border: none;
+          line-height: 1;
+          display: inline;
+          margin: 0;
+          padding: 0;
+        }
+      }
+    }
+  }
+}

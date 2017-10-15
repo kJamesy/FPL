@@ -1,0 +1,79 @@
+.container {
+  max-width: 1340px;
+}
+
+.btn, button {
+  cursor: pointer;
+  padding-top: 0.36rem;
+}
+
+input[type=file], .custom-checkbox {
+  cursor: pointer;
+}
+.custom-file-input:focus ~ .custom-file-control {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.sweet-alert, .sweet-alert button, .custom-checkbox .custom-control-indicator {
+  @include border_radius_none;
+}
+
+.dropdown-menu {
+  margin: 0.4rem 0 0;
+}
+
+.admin-nav.bg-primary {
+  .nav-link {
+    color: $white;
+
+    &::after {
+      height: 25px;
+      content: '';
+      display: inline-block;
+      width: 6px;
+      background: transparent;
+      float: right;
+
+      -webkit-transition: background 300ms;
+      -moz-transition: background 300ms;
+      -o-transition: background 300ms;
+      transition: background 300ms;
+    }
+
+    &.active::after, &:hover::after {
+      background: $yellow;
+    }
+  }
+
+}
+
+.navbar-toggler {
+  border-color: #AAA;
+}
+
+.table-striped tbody tr:nth-of-type(2n+1) {
+  background: $teal;
+}
+
+.table th, .table td {
+  border: none;
+  padding: 0.6rem;
+}
+
+table tr.pointer-cursor th {
+  cursor: pointer;
+}
+
+table tr.pointer-cursor th.normal-cursor {
+  cursor: auto;
+}
+
+table .custom-checkbox {
+  min-height: 1rem;
+}
+
+label.custom-control {
+  margin-bottom: 0;
+}

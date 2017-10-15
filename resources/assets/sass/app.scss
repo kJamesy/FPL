@@ -1,0 +1,13 @@
+// Variables
+@import "variables";
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+//Sweetalert
+@import '~sweetalert/dev/sweetalert';
+
+// Ada
+@import "main";
+
+@import 'pagination';

@@ -1,0 +1,146 @@
+<template>
+    <div class="mt-3">
+        <i class="fa fa-spinner fa-spin" v-if="fetchingData"></i>
+        <div v-if="! fetchingData && appResourceCount">
+            <div v-if="appUserHasPermission('read')">
+                <a href="#" v-on:click.prevent="exportAll" class="btn btn-link pull-right"><i class="fa fa-arrow-circle-o-down"></i></a>
+                <div class="clearfix mb-2"></div>
+                <form v-on:submit.prevent="appDoSearch">
+                    <div class="form-group">
+                        <input type="text" v-model.trim="appSearchText" placeholder="Search" class="form-control" />
+                    </div>
+                </form>
+                <div class="mt-md-4 mb-md-4">
+                    <form class="form-inline pull-left" v-if="appSelectedResources.length">
+                        <label class=" mr-sm-2" for="quick-edit">Options</label>
+                        <select class="custom-select form-control mb-2 mb-sm-0 mr-sm-5" v-model="appQuickEditOption" id="quick-edit">
+                            <option v-for="option in quickEditOptions" v-bind:value="option.value" v-if="appUserHasPermission(option.value)">
+                                {{ option.text }}
+                            </option>
+                        </select>
+                    </form>
+                    <form class="form-inline pull-right">
+                        <span class="mr-3">Page {{ appPagination.current_page }} of {{ appPagination.last_page }} [<b>{{ appPagination.total }} items</b>]</span>
+                        <label class=" mr-sm-2" for="records_per_page">Per Page</label>
+                        <select class="custom-select form-control mb-2 mb-sm-0" v-model="appPerPage" id="records_per_page">
+                            <option v-for="option in appPerPageOptions" v-bind:value="option.value">
+                                {{ option.text }}
+                            </option>
+                        </select>
+                    </form>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr class="pointer-cursor">
+                                <th class="normal-cursor" v-if="appUserHasPermission('update')">
+                                    <label class="custom-control custom-checkbox mr-0">
+                                        <input type="checkbox" class="custom-control-input" v-model="selectAll">
+                                        <span class="custom-control-indicator"></span>
+                                    </label>
+                                </th>
+                                <th v-on:click.prevent="appChangeSort('first_name')">Name <span v-html="appGetSortMarkup('first_name')"></span></th>
+                                <th v-on:click.prevent="appChangeSort('email')">Email <span v-html="appGetSortMarkup('email')"></span></th>
+                                <th v-on:click.prevent="appChangeSort('username')">Username <span v-html="appGetSortMarkup('username')"></span></th>
+                                <th v-on:click.prevent="appChangeSort('active')" >Active <span v-html="appGetSortMarkup('active')"></span></th>
+                                <th v-on:click.prevent="appChangeSort('updated_at')" >Updated <span v-html="appGetSortMarkup('updated_at')"></span></th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="user in orderedAppResources">
+                                <td v-if="appUserHasPermission('update')">
+                                    <template v-if="appUserHasPermissionOnUser('update', user)">
+                                        <label class="custom-control custom-checkbox mr-0">
+                                            <input type="checkbox" class="custom-control-input" v-model="appSelectedResources" v-bind:value="user.id">
+                                            <span class="custom-control-indicator"></span>
+                                        </label>
+                                    </template>
+                                </td>
+                                <td>{{ user.name }} <small v-if="user.is_super_admin" class="text-warning" title="Super Admin" data-toggle="tooltip"> <i class="fa fa-certificate"></i> </small></td>
+                                <td>{{ user.email }}</td>
+                                <td> {{ user.username }}</td>
+                                <td v-html="appActiveMarkup(user.active)"></td>
+                                <td v-bind:title="user.updated_at | dateToTheMinWithDayOfWeek" data-toggle="tooltip">{{ user.updated_at | dateToTheDay }}</td>
+                                <td>
+                                    <template v-if="appUserHasPermissionOnUser('read', user)">
+                                        <router-link v-bind:to="{ name: 'admin_users.view', params: { id: user.id }}" class="btn btn-sm btn-outline-primary"><i class="fa fa-user-o"></i></router-link>
+                                    </template>
+                                    <template v-if="appUserIsCurrentUser(user)">
+                                        <a v-bind:href="appUserHome" class="btn btn-sm btn-outline-warning" data-toggle="tooltip" title="Yours truly :)"><i class="fa fa-user-o"></i></a>
+                                    </template>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <pagination :pagination="appPagination" :callback="fetchResources" :options="appPaginationOptions" class="mt-5 mb-3"></pagination>
+
+            </div>
+            <div v-if="! appUserHasPermission('read')">
+                <i class="fa fa-warning"></i> {{ appUnauthorisedErrorMessage }}
+            </div>
+        </div>
+        <div v-if="! fetchingData && ! appResourceCount" class="mt-5">
+            No records found
+        </div>
+    </div>
+</template>
+
+<script>
+    export default {
+        mounted() {
+            this.$nextTick(function() {
+                this.appInitialiseSettings();
+                this.appInitialiseTooltip();
+                this.fetchResources();
+            });
+        },
+        data() {
+            return {
+                fetchingData: true,
+                quickEditOptions: [
+                    { text: 'Select Option', value: '' },
+                    { text: 'Export', value: 'export' },
+                    { text: 'Activate', value: 'activate' },
+                    { text: 'Deactivate', value: 'deactivate' },
+                    { text: 'Delete', value: 'delete' }
+                ]
+            }
+        },
+        computed: {
+            selectAll: {
+                get() {
+                    return this.appResourcesIds ? this.appSelectedResources.length === this.appResourcesIds.length : false;
+                },
+                set(value) {
+                    let vm = this;
+                    let resourcesIds = _.cloneDeep(vm.appResourcesIds);
+                    let selected = [];
+
+                    if ( value ) {
+                        _.forEach(resourcesIds, function(id) {
+                            if ( id !== vm.appUser.id )
+                                selected.push(id);
+                        });
+                    }
+
+                    this.appSelectedResources = selected;
+                }
+            }
+        },
+        methods: {
+            fetchResources(orderAttr, orderToggle) {
+                this.appFetchResources(this, orderAttr, orderToggle);
+            },
+            quickEditResources() {
+                this.appQuickEditResources();
+            },
+            exportAll() {
+                this.appExportAll();
+            },
+        },
+    }
+</script>

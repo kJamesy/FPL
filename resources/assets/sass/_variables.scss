@@ -1,0 +1,32 @@
+//JAMESY
+$white:  #fff;
+$black:  #000;
+$red:    #FF003C;
+$orange: #E97F02;
+$yellow: #F8CA00;
+$green:  #8A9B0F;
+$blue:   #034F84;
+$teal:   #4ECDC4;
+$pink:   #BD1550;
+$purple: #490A3D;
+
+
+$enable-rounded: false;
+$enable-shadows: false;
+$enable-gradients: false;
+
+$border_color: rgba(0, 0, 0, 0.15);
+$border_color_focus: #0D98FA;
+$form_control_color: #495057;
+
+@mixin border_radius_none {
+  -webkit-border-radius: inherit;
+  -moz-border-radius: inherit;
+  border-radius: inherit;
+}
+
+@mixin box_shadow_none {
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
