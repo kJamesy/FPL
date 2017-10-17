@@ -20,11 +20,8 @@ class StorePlayerScores implements ShouldQueue
      *
      * @var int
      */
-    public $tries = 10;
-
-    public $timeout = 7200;
-
-
+    public $tries = 15;
+	public $timeout = 3000;
     protected $player;
 
     /**
@@ -57,7 +54,7 @@ class StorePlayerScores implements ShouldQueue
      */
     protected function refetchPlayer($player)
     {
-        $client = new Client();
+        $client = new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]]);
 
         try {
             $res = $client->get("https://fantasy.premierleague.com/drf/entry/{$player->fpl_id}");
@@ -78,7 +75,7 @@ class StorePlayerScores implements ShouldQueue
             }
         }
         catch (\Exception $e) {
-
+	        file_put_contents(public_path('exception.html'), $e);
         }
     }
 
@@ -116,7 +113,7 @@ class StorePlayerScores implements ShouldQueue
      */
     protected function fetchScore($fpl_id, $game_week)
     {
-        $client = new Client();
+        $client = new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]]);
 
         try {
             $res = $client->get("https://fantasy.premierleague.com/drf/entry/{$fpl_id}/event/{$game_week}/picks");

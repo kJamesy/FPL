@@ -16,11 +16,15 @@
                             <td>{{ resource.fpl_id }}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Admin's Name</th>
+                            <th scope="row">Total Players</th>
+                            <td>{{ resource.players_count }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Admin</th>
                             <td>{{ resource.admin_name }}</td>
                         </tr>
                         <tr>
-                            <th scope="row">Admin's Team Name</th>
+                            <th scope="row">Admin's Team</th>
                             <td>{{ resource.admin_team_name }}</td>
                         </tr>
                         <tr>
@@ -52,7 +56,7 @@
         data() {
             return {
                 fetchingData: true,
-                resource: {id: '', name: '', fpl_id: '', admin_name: '', admin_team_name: '', created_at: '', updated_at: ''}
+                resource: {id: '', name: '', fpl_id: '', players_count: '', admin_name: '', admin_team_name: '', created_at: '', updated_at: ''}
             }
         },
         methods: {

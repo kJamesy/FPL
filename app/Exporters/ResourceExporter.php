@@ -30,6 +30,9 @@ class ResourceExporter
     public function generateExcelExport($type)
     {
         switch ($type) {
+	        case 'leagues':
+		        return static::generateLeaguesExport();
+		        break;
             case 'users':
                 return static::generateUsersExport();
                 break;
@@ -71,10 +74,10 @@ class ResourceExporter
     }
 
     /**
-     * Generate mailing lists export
+     * Generate leagues export
      * @return mixed
      */
-    public function generateMailingListsExport()
+    public function generateLeaguesExport()
     {
         return Excel::create($this->exportFileName, function($excel) {
             $resources = $this->resources;
@@ -84,7 +87,10 @@ class ResourceExporter
                 foreach ($resources as $resource) {
                     $exportArr[] = [
                         'Name' => $resource->name,
-                        'Description' => $resource->description,
+                        'FPL ID' => $resource->fpl_id,
+                        'Total Players' => $resource->players_count,
+                        'Admin' => $resource->admin_name,
+                        'Admin Team' => $resource->admin_team_name,
                         'Created' => $resource->created_at->toDateTimeString(),
                         'Last Updated' => $resource->updated_at->toDateTimeString(),
                     ];
@@ -92,7 +98,7 @@ class ResourceExporter
                 }
             }
 
-            $excel->sheet('Mailing Lists', function($sheet) use ($exportArr) {
+            $excel->sheet('Leagues', function($sheet) use ($exportArr) {
                 $sheet->fromArray($exportArr);
             });
 

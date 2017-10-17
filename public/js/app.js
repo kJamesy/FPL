@@ -56572,7 +56572,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/Admin/Admin.vue"
+Component.options.__file = "resources\\assets\\js\\components\\Admin\\Admin.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -56645,7 +56645,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/Admin/Nav.vue"
+Component.options.__file = "resources\\assets\\js\\components\\Admin\\Nav.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -56811,7 +56811,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/Admin/Dashboard.vue"
+Component.options.__file = "resources\\assets\\js\\components\\Admin\\Dashboard.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -56938,7 +56938,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/Admin/Profile.vue"
+Component.options.__file = "resources\\assets\\js\\components\\Admin\\Profile.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -57124,7 +57124,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/Admin/EditProfile.vue"
+Component.options.__file = "resources\\assets\\js\\components\\Admin\\EditProfile.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -57569,7 +57569,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/Admin/EditPassword.vue"
+Component.options.__file = "resources\\assets\\js\\components\\Admin\\EditPassword.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -57936,7 +57936,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/AdminUsers/AdminUsers.vue"
+Component.options.__file = "resources\\assets\\js\\components\\AdminUsers\\AdminUsers.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -58009,7 +58009,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/AdminUsers/Nav.vue"
+Component.options.__file = "resources\\assets\\js\\components\\AdminUsers\\Nav.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -58227,7 +58227,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/AdminUsers/AllUsers.vue"
+Component.options.__file = "resources\\assets\\js\\components\\AdminUsers\\AllUsers.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -59049,7 +59049,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/AdminUsers/NewUser.vue"
+Component.options.__file = "resources\\assets\\js\\components\\AdminUsers\\NewUser.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -59678,7 +59678,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/AdminUsers/ViewUser.vue"
+Component.options.__file = "resources\\assets\\js\\components\\AdminUsers\\ViewUser.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -59974,7 +59974,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/AdminUsers/EditUser.vue"
+Component.options.__file = "resources\\assets\\js\\components\\AdminUsers\\EditUser.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -60715,7 +60715,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/AdminUsers/EditUserPermissions.vue"
+Component.options.__file = "resources\\assets\\js\\components\\AdminUsers\\EditUserPermissions.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -61270,7 +61270,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/Leagues/Leagues.vue"
+Component.options.__file = "resources\\assets\\js\\components\\Leagues\\Leagues.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -61343,7 +61343,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/Leagues/Nav.vue"
+Component.options.__file = "resources\\assets\\js\\components\\Leagues\\Nav.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -61404,8 +61404,8 @@ var render = function() {
             attrs: { to: { name: "leagues.create" }, tag: "a", exact: "" }
           },
           [
-            _c("i", { staticClass: "fa fa-pencil" }),
-            _vm._v("\n            Fetch New League")
+            _c("i", { staticClass: "fa fa-cloud-download" }),
+            _vm._v("\n            (Re)Fetch League")
           ]
         )
       ],
@@ -61507,7 +61507,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/Leagues/AllLeagues.vue"
+Component.options.__file = "resources\\assets\\js\\components\\Leagues\\AllLeagues.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -61623,6 +61623,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -61630,13 +61632,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.appInitialiseSettings();
             this.appInitialiseTooltip();
             this.fetchResources();
-            this.applyListeners();
         });
     },
     data: function data() {
         return {
             fetchingData: true,
-            quickEditOptions: [{ text: 'Select Option', value: '' }, { text: 'Fetch New Data', value: 'fetch' }, { text: 'Export', value: 'export' }]
+            quickEditOptions: [{ text: 'Select Option', value: '' }, { text: 'Export', value: 'export' }]
         };
     },
 
@@ -61989,12 +61990,34 @@ var render = function() {
                               on: {
                                 click: function($event) {
                                   $event.preventDefault()
+                                  _vm.appChangeSort("players_count")
+                                }
+                              }
+                            },
+                            [
+                              _vm._v("Total Players "),
+                              _c("span", {
+                                domProps: {
+                                  innerHTML: _vm._s(
+                                    _vm.appGetSortMarkup("players_count")
+                                  )
+                                }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "th",
+                            {
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
                                   _vm.appChangeSort("admin_name")
                                 }
                               }
                             },
                             [
-                              _vm._v("Admin's Name "),
+                              _vm._v("Admin "),
                               _c("span", {
                                 domProps: {
                                   innerHTML: _vm._s(
@@ -62016,7 +62039,7 @@ var render = function() {
                               }
                             },
                             [
-                              _vm._v("Admin's Team Name "),
+                              _vm._v("Admin's Team "),
                               _c("span", {
                                 domProps: {
                                   innerHTML: _vm._s(
@@ -62127,6 +62150,8 @@ var render = function() {
                             _c("td", [_vm._v(_vm._s(resource.name))]),
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(resource.fpl_id))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(resource.players_count))]),
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(resource.admin_name))]),
                             _vm._v(" "),
@@ -62246,7 +62271,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/Leagues/NewLeague.vue"
+Component.options.__file = "resources\\assets\\js\\components\\Leagues\\NewLeague.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -62479,7 +62504,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/Leagues/ViewLeague.vue"
+Component.options.__file = "resources\\assets\\js\\components\\Leagues\\ViewLeague.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
 
 /* hot reload */
@@ -62551,6 +62576,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -62561,7 +62590,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             fetchingData: true,
-            resource: { id: '', name: '', fpl_id: '', admin_name: '', admin_team_name: '', created_at: '', updated_at: '' }
+            resource: { id: '', name: '', fpl_id: '', players_count: '', admin_name: '', admin_team_name: '', created_at: '', updated_at: '' }
         };
     },
 
@@ -62613,7 +62642,15 @@ var render = function() {
                         _vm._v(" "),
                         _c("tr", [
                           _c("th", { attrs: { scope: "row" } }, [
-                            _vm._v("Admin's Name")
+                            _vm._v("Total Players")
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(_vm.resource.players_count))])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", { attrs: { scope: "row" } }, [
+                            _vm._v("Admin")
                           ]),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(_vm.resource.admin_name))])
@@ -62621,7 +62658,7 @@ var render = function() {
                         _vm._v(" "),
                         _c("tr", [
                           _c("th", { attrs: { scope: "row" } }, [
-                            _vm._v("Admin's Team Name")
+                            _vm._v("Admin's Team")
                           ]),
                           _vm._v(" "),
                           _c("td", [

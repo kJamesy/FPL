@@ -25,6 +25,15 @@ class League extends Model
         'fpl_id' => 'required',
     ];
 
+	/**
+	 * A League belongsToMany Players
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+	 */
+	public function players()
+	{
+		return $this->belongsToMany(Player::class);
+	}
+
     /**
      * Find resource by id
      * @param $id
@@ -32,7 +41,7 @@ class League extends Model
      */
     public static function findResource($id)
     {
-        return static::find($id);
+        return static::withCount('players')->find($id);
     }
 
     /**
@@ -46,7 +55,7 @@ class League extends Model
      */
     public static function getResources($selected = [], $orderBy = 'updated_at', $order = 'desc', $paginate = null)
     {
-        $query = static::with([]);
+        $query = static::withCount('players');
 
         if ( count($selected) )
             $query->whereIn('id', $selected);

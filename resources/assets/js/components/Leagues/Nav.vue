@@ -5,8 +5,8 @@
                 All Leagues</router-link>
         </li>
         <li class="nav-item">
-            <router-link v-bind:to="{ name: 'leagues.create' }" tag="a" class="nav-link" exact><i class="fa fa-pencil"></i>
-                Fetch New League</router-link>
+            <router-link v-bind:to="{ name: 'leagues.create' }" tag="a" class="nav-link" exact><i class="fa fa-cloud-download"></i>
+                (Re)Fetch League</router-link>
         </li>
         <li class="nav-item" v-if="appCurrentRouteIdParam">
             <router-link v-bind:to="{ name: 'leagues.view', params: { id: appCurrentRouteIdParam }}" class="nav-link" exact><i class="fa fa-eye"></i>

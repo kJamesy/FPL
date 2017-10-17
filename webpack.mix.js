@@ -19,14 +19,14 @@ if ( mix.config.inProduction ) {
     mix.version();
 }
 
-// mix.browserSync('fpl.app');
+mix.browserSync('fpl.app');
 
-mix.browserSync({
-    host: '192.168.10.10',
-    proxy: 'fpl.app',
-    open: false,
-    watchOptions: {
-        usePolling: true,
-        interval: 500
-    }
-});
+// mix.browserSync({
+//     host: '192.168.10.10',
+//     proxy: 'fpl.app',
+//     open: false,
+//     watchOptions: {
+//         usePolling: true,
+//         interval: 500
+//     }
+// });

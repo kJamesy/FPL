@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\Guest;
 
-use App\Jobs\StoreLeaguePlayers;
+use App\Exporters\ResourceExporter;
+use App\Jobs\FetchLeaguePlayers;
 use App\League;
 use App\Permissions\UserPermissions;
 use App\Settings\UserSettings;
@@ -10,7 +11,6 @@ use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Artisan;
 
 class LeagueController extends Controller
 {
@@ -34,7 +34,7 @@ class LeagueController extends Controller
         $this->redirect = route('leagues.index');
         $this->rules = League::$rules;
         $this->perPage = 25;
-        $this->orderByFields = ['fpl_id', 'name', 'email', 'admin_name', 'created_at', 'updated_at'];
+        $this->orderByFields = ['fpl_id', 'name', 'email', 'admin_name', 'players_count', 'created_at', 'updated_at'];
         $this->orderCriteria = ['asc', 'desc'];
         $this->settingsKey = 'leagues';
         $this->policies = UserPermissions::getPolicies();
@@ -118,13 +118,9 @@ class LeagueController extends Controller
 
                             $league->save();
 
-                            Artisan::call('supervise:queue-worker');
-
-                            $job = (new StoreLeaguePlayers($league))->delay(Carbon::now()->addSeconds(10));
-                            dispatch($job);
+                            FetchLeaguePlayers::dispatch($league)->onQueue('high');
 
                             return $league;
-
                         }
 
                     }
@@ -177,48 +173,47 @@ class LeagueController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+	/**
+	 * Show specified resource
+	 * @param $id
+	 * @param Request $request
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function show($id, Request $request)
+	{
+		$resource = League::findResource( (int) $id );
+		$currentUser = $request->user();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+		if ( $resource ) {
+			if ( ! $currentUser->can('read', $this->policyOwnerClass) )
+				return response()->json(['error' => 'You are not authorised to perform this action.'], 403);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+			return response()->json(compact('resource'));
+		}
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+		return response()->json(['error' => "$this->friendlyName does not exist"], 404);
+	}
+
+	/**
+	 * Export resources to Excel
+	 * @param Request $request
+	 * @return \Illuminate\Http\RedirectResponse|mixed
+	 */
+	public function export(Request $request)
+	{
+		if ( $request->user()->can('read', $this->policyOwnerClass) ) {
+			$resourceIds = (array) $request->resourceIds;
+			$fileName = '';
+
+			$resources = League::getResources($resourceIds);
+			$fileName .= count($resourceIds) ? "Specified-{$this->friendlyNamePlural}-" : "All-{$this->friendlyNamePlural}-";
+			$fileName .= Carbon::now()->toDateString();
+
+			$exporter = new ResourceExporter($resources, $fileName);
+			return $exporter->generateExcelExport('leagues');
+		}
+		else
+			return redirect()->back();
+	}
+
 }

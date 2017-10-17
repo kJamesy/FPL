@@ -12,8 +12,8 @@
 */
 
 Route::get('/', ['as' => 'guest.home', function () { return redirect(route('leagues.index')); }]);
-Route::redirect('/home', route('guest.home'));
-Route::redirect('/guest', route('guest.home'));
+Route::redirect('home', route('guest.home'));
+Route::redirect('guest', route('guest.home'));
 
 // Player Details
 // https://fantasy.premierleague.com/drf/entry/99486
@@ -30,8 +30,6 @@ Route::group(['prefix' => 'lab'], function() {
         // 428936
         // 360101
         // 695687
-
-        var_dump(phpinfo());
     });
 
     Route::get('worker', function() {
@@ -81,6 +79,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
 Route::group(['prefix' => 'guest', 'namespace' => 'Guest', 'middleware' => ['auto_login_guest']], function() {
 
     if ( ! request()->ajax() ) {
+	    Route::get('leagues/export', 'LeagueController@export');
         Route::get('leagues/{vue?}', 'LeagueController@index');
     }
 

@@ -47,8 +47,9 @@
                                 </th>
                                 <th v-on:click.prevent="appChangeSort('name')">Name <span v-html="appGetSortMarkup('name')"></span></th>
                                 <th v-on:click.prevent="appChangeSort('fpl_id')">FPL ID <span v-html="appGetSortMarkup('fpl_id')"></span></th>
-                                <th v-on:click.prevent="appChangeSort('admin_name')">Admin's Name <span v-html="appGetSortMarkup('admin_name')"></span></th>
-                                <th v-on:click.prevent="appChangeSort('admin_team_name')">Admin's Team Name <span v-html="appGetSortMarkup('admin_team_name')"></span></th>
+                                <th v-on:click.prevent="appChangeSort('players_count')">Total Players <span v-html="appGetSortMarkup('players_count')"></span></th>
+                                <th v-on:click.prevent="appChangeSort('admin_name')">Admin <span v-html="appGetSortMarkup('admin_name')"></span></th>
+                                <th v-on:click.prevent="appChangeSort('admin_team_name')">Admin's Team <span v-html="appGetSortMarkup('admin_team_name')"></span></th>
                                 <th v-on:click.prevent="appChangeSort('updated_at')" >Updated <span v-html="appGetSortMarkup('updated_at')"></span></th>
                                 <th v-if="appUserHasPermission('update')"></th>
                             </tr>
@@ -63,6 +64,7 @@
                                 </td>
                                 <td>{{ resource.name }}</td>
                                 <td>{{ resource.fpl_id }}</td>
+                                <td>{{ resource.players_count }}</td>
                                 <td>{{ resource.admin_name }}</td>
                                 <td>{{ resource.admin_team_name }}</td>
                                 <td><span v-bind:title="resource.updated_at | dateToTheMinWithDayOfWeek" data-toggle="tooltip">{{ resource.updated_at | dateToTheDay }}</span></td>
@@ -93,7 +95,6 @@
                 this.appInitialiseSettings();
                 this.appInitialiseTooltip();
                 this.fetchResources();
-                this.applyListeners();
             });
         },
         data() {
@@ -101,7 +102,6 @@
                 fetchingData: true,
                 quickEditOptions: [
                     { text: 'Select Option', value: '' },
-                    { text: 'Fetch New Data', value: 'fetch' },
                     { text: 'Export', value: 'export' },
                 ],
             }
