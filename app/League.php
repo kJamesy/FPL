@@ -81,4 +81,14 @@ class League extends Model
 
         return $query->paginate($paginate);
     }
+
+	/**
+	 * Get resources that are attached to players
+	 * @return mixed
+	 */
+	public static function getAttachedResources()
+	{
+		return static::whereHas('players')->withCount('players')->orderBy('name')->get(['id', 'name']);
+	}
+
 }

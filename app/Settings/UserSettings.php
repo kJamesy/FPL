@@ -26,6 +26,8 @@ class UserSettings
     public static $cacheKeys = [
         'users',
         'leagues',
+        'players',
+        'scores',
     ];
 
     /**

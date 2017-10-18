@@ -20,12 +20,19 @@
                             <td>{{ resource.players_count }}</td>
                         </tr>
                         <tr>
+                            <th scope="row">Join Code</th>
+                            <td>{{ resource.admin_fpl_id }}-{{ resource.fpl_id }}</td>
+                        </tr><tr>
+                            <th scope="row">Auto-join Link</th>
+                            <td><i class="fa fa-external-link"></i> <a target="_blank" v-bind:href="getAutoJoinLink()">{{ getAutoJoinLink() }}</a> </td>
+                        </tr>
+                        <tr>
                             <th scope="row">Admin</th>
-                            <td>{{ resource.admin_name }}</td>
+                            <td><i class="fa fa-link"></i> <a v-bind:href="adminTeamUrl">{{ resource.admin_name }}</a></td>
                         </tr>
                         <tr>
                             <th scope="row">Admin's Team</th>
-                            <td>{{ resource.admin_team_name }}</td>
+                            <td><i class="fa fa-link"></i> <a v-bind:href="adminTeamUrl">{{ resource.admin_team_name }}</a></td>
                         </tr>
                         <tr>
                             <th scope="row">Fetch Date</th>
@@ -56,12 +63,21 @@
         data() {
             return {
                 fetchingData: true,
-                resource: {id: '', name: '', fpl_id: '', players_count: '', admin_name: '', admin_team_name: '', created_at: '', updated_at: ''}
+                resource: {id: '', name: '', fpl_id: '', players_count: '', admin_fpl_id: '', admin_name: '', admin_team_name: '', created_at: '', updated_at: '', admin_id: '', playersUrl: ''}
+            }
+        },
+        computed: {
+            adminTeamUrl() {
+                let vm = this;
+                return vm.resource.playersUrl + '/' + vm.resource.admin_id + '/view';
             }
         },
         methods: {
             showResource() {
                 this.appShowResource();
+            },
+            getAutoJoinLink() {
+                return "https://fantasy.premierleague.com?autojoin-code=" + this.resource.admin_fpl_id + '-' + this.resource.fpl_id;
             }
         }
     }

@@ -120,3 +120,37 @@ if ( $('#leagues-app').length ) {
         router: router
     });
 }
+
+/**
+ * Players
+ */
+import Players from './components/Players/Players.vue';
+import PlayersAll from './components/Players/AllPlayers.vue';
+import PlayersNew from './components/Players/NewPlayer.vue';
+import PlayersView from './components/Players/ViewPlayer.vue';
+import PlayersEdit from './components/Players/EditPlayer.vue';
+
+if ( $('#players-app').length ) {
+    let router = new VueRouter({
+        mode: 'history',
+        base: links.base,
+        linkActiveClass: 'active',
+        routes: [
+            { path: '/', name: 'players.index', component: PlayersAll },
+            { path: '/:leagueId(\\d+)/in-league', name: 'players.list', component: PlayersAll },
+            { path: '/unattached', name: 'players.unattached', component: PlayersAll },
+            { path: '/create', name: 'players.create', component: PlayersNew },
+            { path: '/:id(\\d+)/view', name: 'players.view', component: PlayersView },
+            { path: '/:id(\\d+)/edit', name: 'players.edit', component: PlayersEdit },
+            { path: '*', redirect: { name: 'players.index' } }
+        ]
+    });
+
+    new Vue({
+        el: '#players-app',
+        components: {
+            Players
+        },
+        router: router
+    });
+}

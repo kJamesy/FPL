@@ -6,6 +6,7 @@ use App\Exporters\ResourceExporter;
 use App\Jobs\FetchLeaguePlayers;
 use App\League;
 use App\Permissions\UserPermissions;
+use App\Player;
 use App\Settings\UserSettings;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -34,7 +35,7 @@ class LeagueController extends Controller
         $this->redirect = route('leagues.index');
         $this->rules = League::$rules;
         $this->perPage = 25;
-        $this->orderByFields = ['fpl_id', 'name', 'email', 'admin_name', 'players_count', 'created_at', 'updated_at'];
+        $this->orderByFields = ['fpl_id', 'name', 'admin_fpl_id', 'admin_name', 'admin_team_name', 'players_count', 'created_at', 'updated_at'];
         $this->orderCriteria = ['asc', 'desc'];
         $this->settingsKey = 'leagues';
         $this->policies = UserPermissions::getPolicies();
@@ -182,11 +183,20 @@ class LeagueController extends Controller
 	public function show($id, Request $request)
 	{
 		$resource = League::findResource( (int) $id );
+		$playersUrl = route('players.index');
 		$currentUser = $request->user();
 
 		if ( $resource ) {
 			if ( ! $currentUser->can('read', $this->policyOwnerClass) )
 				return response()->json(['error' => 'You are not authorised to perform this action.'], 403);
+
+			$admin = Player::where('fpl_id', $resource->admin_fpl_id)->first();
+
+			if ( ! $admin )
+				return response()->json(['error' => "$this->friendlyName does not exist"], 404);
+
+			$resource->admin_id = $admin->id;
+			$resource->playersUrl = $playersUrl;
 
 			return response()->json(compact('resource'));
 		}

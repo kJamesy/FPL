@@ -30,6 +30,11 @@ Route::group(['prefix' => 'lab'], function() {
         // 428936
         // 360101
         // 695687
+
+//	    $players = \App\Player::join('scores', 'scores.player_id', '=', 'players.id')
+//	    ->where('scores.gameweek', \Illuminate\Support\Facades\DB::raw("(select max(`game_week`) from `scores`)"))
+
+
     });
 
     Route::get('worker', function() {
@@ -81,7 +86,11 @@ Route::group(['prefix' => 'guest', 'namespace' => 'Guest', 'middleware' => ['aut
     if ( ! request()->ajax() ) {
 	    Route::get('leagues/export', 'LeagueController@export');
         Route::get('leagues/{vue?}', 'LeagueController@index');
+	    Route::get('players/export', 'PlayerController@export');
+	    Route::get('players/{id}/export-single', 'PlayerController@exportSingle');
+	    Route::get('players/{vue?}', 'PlayerController@index');
     }
 
     Route::resource('leagues', 'LeagueController');
+    Route::resource('players', 'PlayerController');
 });

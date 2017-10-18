@@ -16561,7 +16561,7 @@ return zhTw;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(128);
-module.exports = __webpack_require__(204);
+module.exports = __webpack_require__(221);
 
 
 /***/ }),
@@ -16608,6 +16608,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__components_Leagues_NewLeague_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20__components_Leagues_NewLeague_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_Leagues_ViewLeague_vue__ = __webpack_require__(201);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__components_Leagues_ViewLeague_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_21__components_Leagues_ViewLeague_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components_Players_Players_vue__ = __webpack_require__(204);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components_Players_Players_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_22__components_Players_Players_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__components_Players_AllPlayers_vue__ = __webpack_require__(209);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__components_Players_AllPlayers_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_23__components_Players_AllPlayers_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__components_Players_NewPlayer_vue__ = __webpack_require__(212);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__components_Players_NewPlayer_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_24__components_Players_NewPlayer_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__components_Players_ViewPlayer_vue__ = __webpack_require__(215);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__components_Players_ViewPlayer_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_25__components_Players_ViewPlayer_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__components_Players_EditPlayer_vue__ = __webpack_require__(218);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__components_Players_EditPlayer_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_26__components_Players_EditPlayer_vue__);
 __webpack_require__(129);
 
 
@@ -16709,6 +16719,32 @@ if ($('#leagues-app').length) {
             Leagues: __WEBPACK_IMPORTED_MODULE_18__components_Leagues_Leagues_vue___default.a
         },
         router: _router2
+    });
+}
+
+/**
+ * Players
+ */
+
+
+
+
+
+
+if ($('#players-app').length) {
+    var _router3 = new __WEBPACK_IMPORTED_MODULE_0_vue_router__["a" /* default */]({
+        mode: 'history',
+        base: links.base,
+        linkActiveClass: 'active',
+        routes: [{ path: '/', name: 'players.index', component: __WEBPACK_IMPORTED_MODULE_23__components_Players_AllPlayers_vue___default.a }, { path: '/:leagueId(\\d+)/in-league', name: 'players.list', component: __WEBPACK_IMPORTED_MODULE_23__components_Players_AllPlayers_vue___default.a }, { path: '/unattached', name: 'players.unattached', component: __WEBPACK_IMPORTED_MODULE_23__components_Players_AllPlayers_vue___default.a }, { path: '/create', name: 'players.create', component: __WEBPACK_IMPORTED_MODULE_24__components_Players_NewPlayer_vue___default.a }, { path: '/:id(\\d+)/view', name: 'players.view', component: __WEBPACK_IMPORTED_MODULE_25__components_Players_ViewPlayer_vue___default.a }, { path: '/:id(\\d+)/edit', name: 'players.edit', component: __WEBPACK_IMPORTED_MODULE_26__components_Players_EditPlayer_vue___default.a }, { path: '*', redirect: { name: 'players.index' } }]
+    });
+
+    new Vue({
+        el: '#players-app',
+        components: {
+            Players: __WEBPACK_IMPORTED_MODULE_22__components_Players_Players_vue___default.a
+        },
+        router: _router3
     });
 }
 
@@ -55847,6 +55883,15 @@ var AppListScreenPlugin = {
                     set: function set(value) {
                         this.appSelectedResources = value ? this.appResourcesIds : [];
                     }
+                },
+                appBelongingToLeague: function appBelongingToLeague() {
+                    return this.$route.params.leagueId ? this.$route.params.leagueId : 0;
+                },
+                appUnattached: function appUnattached() {
+                    return _.includes(this.$route.path, 'unattached');
+                },
+                appBelongingToOrUnattached: function appBelongingToOrUnattached() {
+                    if (this.appBelongingToLeague) return this.$route.params.leagueId;else if (this.appUnattached) return -1;else return 0;
                 }
             },
             methods: {
@@ -61625,6 +61670,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -61650,6 +61697,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         },
         exportAll: function exportAll() {
             this.appExportAll();
+        },
+        getAutoJoinLink: function getAutoJoinLink(code) {
+            return "<a target='_blank' href='https://fantasy.premierleague.com?autojoin-code=" + code + "'><i class='fa fa-external-link'></i> " + code + "</a>";
         }
     }
 });
@@ -62012,6 +62062,28 @@ var render = function() {
                               on: {
                                 click: function($event) {
                                   $event.preventDefault()
+                                  _vm.appChangeSort("admin_fpl_id")
+                                }
+                              }
+                            },
+                            [
+                              _vm._v("Join Code "),
+                              _c("span", {
+                                domProps: {
+                                  innerHTML: _vm._s(
+                                    _vm.appGetSortMarkup("admin_fpl_id")
+                                  )
+                                }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "th",
+                            {
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
                                   _vm.appChangeSort("admin_name")
                                 }
                               }
@@ -62152,6 +62224,18 @@ var render = function() {
                             _c("td", [_vm._v(_vm._s(resource.fpl_id))]),
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(resource.players_count))]),
+                            _vm._v(" "),
+                            _c("td", {
+                              domProps: {
+                                innerHTML: _vm._s(
+                                  _vm.getAutoJoinLink(
+                                    resource.admin_fpl_id +
+                                      "-" +
+                                      resource.fpl_id
+                                  )
+                                )
+                              }
+                            }),
                             _vm._v(" "),
                             _c("td", [_vm._v(_vm._s(resource.admin_name))]),
                             _vm._v(" "),
@@ -62326,10 +62410,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
         this.$nextTick(function () {
+            this.appInitialiseTooltip();
             this.goTime();
         });
     },
@@ -62389,14 +62476,7 @@ var render = function() {
                 },
                 [
                   _c("div", { staticClass: "form-group row" }, [
-                    _c(
-                      "label",
-                      {
-                        staticClass: "col-sm-3 form-control-label",
-                        attrs: { for: "fpl_id" }
-                      },
-                      [_vm._v("FPL League ID")]
-                    ),
+                    _vm._m(0),
                     _vm._v(" "),
                     _c("div", { staticClass: "col-sm-5" }, [
                       _c("input", {
@@ -62440,7 +62520,7 @@ var render = function() {
                     ])
                   ]),
                   _vm._v(" "),
-                  _vm._m(0)
+                  _vm._m(1)
                 ]
               )
             ])
@@ -62451,6 +62531,28 @@ var render = function() {
   )
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "label",
+      {
+        staticClass: "col-sm-3 form-control-label",
+        attrs: {
+          for: "fpl_id",
+          title:
+            "On the league screen on fantasypremierleague.com, this is the long number in the URL",
+          "data-toggle": "tooltip"
+        }
+      },
+      [
+        _vm._v("\n                        FPL "),
+        _c("strong", [_vm._v("Private Classic League")]),
+        _vm._v(" ID\n                    ")
+      ]
+    )
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -62580,6 +62682,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -62590,13 +62699,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             fetchingData: true,
-            resource: { id: '', name: '', fpl_id: '', players_count: '', admin_name: '', admin_team_name: '', created_at: '', updated_at: '' }
+            resource: { id: '', name: '', fpl_id: '', players_count: '', admin_fpl_id: '', admin_name: '', admin_team_name: '', created_at: '', updated_at: '', admin_id: '', playersUrl: '' }
         };
     },
 
+    computed: {
+        adminTeamUrl: function adminTeamUrl() {
+            var vm = this;
+            return vm.resource.playersUrl + '/' + vm.resource.admin_id + '/view';
+        }
+    },
     methods: {
         showResource: function showResource() {
             this.appShowResource();
+        },
+        getAutoJoinLink: function getAutoJoinLink() {
+            return "https://fantasy.premierleague.com?autojoin-code=" + this.resource.admin_fpl_id + '-' + this.resource.fpl_id;
         }
     }
 });
@@ -62650,10 +62768,50 @@ var render = function() {
                         _vm._v(" "),
                         _c("tr", [
                           _c("th", { attrs: { scope: "row" } }, [
+                            _vm._v("Join Code")
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(_vm.resource.admin_fpl_id) +
+                                "-" +
+                                _vm._s(_vm.resource.fpl_id)
+                            )
+                          ])
+                        ]),
+                        _c("tr", [
+                          _c("th", { attrs: { scope: "row" } }, [
+                            _vm._v("Auto-join Link")
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("i", { staticClass: "fa fa-external-link" }),
+                            _vm._v(" "),
+                            _c(
+                              "a",
+                              {
+                                attrs: {
+                                  target: "_blank",
+                                  href: _vm.getAutoJoinLink()
+                                }
+                              },
+                              [_vm._v(_vm._s(_vm.getAutoJoinLink()))]
+                            )
+                          ])
+                        ]),
+                        _vm._v(" "),
+                        _c("tr", [
+                          _c("th", { attrs: { scope: "row" } }, [
                             _vm._v("Admin")
                           ]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(_vm.resource.admin_name))])
+                          _c("td", [
+                            _c("i", { staticClass: "fa fa-link" }),
+                            _vm._v(" "),
+                            _c("a", { attrs: { href: _vm.adminTeamUrl } }, [
+                              _vm._v(_vm._s(_vm.resource.admin_name))
+                            ])
+                          ])
                         ]),
                         _vm._v(" "),
                         _c("tr", [
@@ -62662,7 +62820,11 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("td", [
-                            _vm._v(_vm._s(_vm.resource.admin_team_name))
+                            _c("i", { staticClass: "fa fa-link" }),
+                            _vm._v(" "),
+                            _c("a", { attrs: { href: _vm.adminTeamUrl } }, [
+                              _vm._v(_vm._s(_vm.resource.admin_team_name))
+                            ])
                           ])
                         ]),
                         _vm._v(" "),
@@ -62725,6 +62887,2590 @@ if (false) {
 
 /***/ }),
 /* 204 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(205)
+/* template */
+var __vue_template__ = __webpack_require__(208)
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Players\\Players.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7131f61b", Component.options)
+  } else {
+    hotAPI.reload("data-v-7131f61b", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 205 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Nav_vue__ = __webpack_require__(206);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Nav_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Nav_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        AppNav: __WEBPACK_IMPORTED_MODULE_0__Nav_vue___default.a
+    }
+});
+
+/***/ }),
+/* 206 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = null
+/* template */
+var __vue_template__ = __webpack_require__(207)
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Players\\Nav.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-676bcd8c", Component.options)
+  } else {
+    hotAPI.reload("data-v-676bcd8c", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 207 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("ul", { staticClass: "nav nav-tabs mt-3" }, [
+    _vm.appUserHasPermission("read")
+      ? _c(
+          "li",
+          { staticClass: "nav-item" },
+          [
+            _c(
+              "router-link",
+              {
+                staticClass: "nav-link",
+                attrs: { to: { name: "players.index" }, tag: "a", exact: "" }
+              },
+              [
+                _c("i", { staticClass: "fa fa-home" }),
+                _vm._v("\n            All Players")
+              ]
+            )
+          ],
+          1
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.appUserHasPermission("read") && _vm.appBelongingToLeague
+      ? _c(
+          "li",
+          { staticClass: "nav-item" },
+          [
+            _c(
+              "router-link",
+              {
+                staticClass: "nav-link",
+                attrs: {
+                  to: {
+                    name: "players.list",
+                    params: { leagueId: _vm.appBelongingToLeague }
+                  },
+                  tag: "a",
+                  exact: ""
+                }
+              },
+              [
+                _c("i", { staticClass: "fa fa-folder-open" }),
+                _vm._v("\n            Players in League")
+              ]
+            )
+          ],
+          1
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.appUserHasPermission("read") && _vm.appUnattached
+      ? _c(
+          "li",
+          { staticClass: "nav-item" },
+          [
+            _c(
+              "router-link",
+              {
+                staticClass: "nav-link",
+                attrs: {
+                  to: { name: "players.unattached" },
+                  tag: "a",
+                  exact: ""
+                }
+              },
+              [
+                _c("i", { staticClass: "fa fa-exclamation-circle" }),
+                _vm._v("\n            Unattached Players")
+              ]
+            )
+          ],
+          1
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.appUserHasPermission("create")
+      ? _c(
+          "li",
+          { staticClass: "nav-item" },
+          [
+            _c(
+              "router-link",
+              {
+                staticClass: "nav-link",
+                attrs: { to: { name: "players.create" }, tag: "a", exact: "" }
+              },
+              [
+                _c("i", { staticClass: "fa fa-cloud-download" }),
+                _vm._v("\n            (Re)Fetch Player")
+              ]
+            )
+          ],
+          1
+        )
+      : _vm._e(),
+    _vm._v(" "),
+    _vm.appCurrentRouteIdParam && _vm.appUserHasPermission("read")
+      ? _c(
+          "li",
+          { staticClass: "nav-item" },
+          [
+            _c(
+              "router-link",
+              {
+                staticClass: "nav-link",
+                attrs: {
+                  to: {
+                    name: "players.view",
+                    params: { id: _vm.appCurrentRouteIdParam }
+                  },
+                  exact: ""
+                }
+              },
+              [
+                _c("i", { staticClass: "fa fa-eye" }),
+                _vm._v("\n            View Player")
+              ]
+            )
+          ],
+          1
+        )
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-676bcd8c", module.exports)
+  }
+}
+
+/***/ }),
+/* 208 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "ml-md-5" },
+    [
+      _c("vue-progress-bar"),
+      _vm._v(" "),
+      _c("app-nav"),
+      _vm._v(" "),
+      _c("router-view", { key: _vm.$route.fullPath })
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-7131f61b", module.exports)
+  }
+}
+
+/***/ }),
+/* 209 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(210)
+/* template */
+var __vue_template__ = __webpack_require__(211)
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Players\\AllPlayers.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-ff821b10", Component.options)
+  } else {
+    hotAPI.reload("data-v-ff821b10", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 210 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    mounted: function mounted() {
+        this.$nextTick(function () {
+            this.appInitialiseSettings();
+            this.appInitialiseTooltip();
+            this.belongingTo = this.appBelongingToOrUnattached;
+            this.fetchResources();
+            this.applyListeners();
+        });
+    },
+    data: function data() {
+        return {
+            fetchingData: true,
+            quickEditOptions: [{ text: 'Select Option', value: '' }, { text: 'Export', value: 'export' }],
+            league: 0,
+            leagues: [],
+            latestGameWeek: 0
+        };
+    },
+
+    methods: {
+        fetchResources: function fetchResources(orderAttr, orderToggle) {
+            this.appFetchResources(this, orderAttr, orderToggle);
+        },
+        quickEditResources: function quickEditResources() {
+            this.appQuickEditResources();
+        },
+        exportAll: function exportAll() {
+            this.appExportAll();
+        },
+        setOtherData: function setOtherData() {
+            var vm = this;
+            if (typeof vm.appFetchResponse !== 'undefined') {
+                var response = vm.appFetchResponse;
+
+                if (response.data.leagues) vm.leagues = response.data.leagues;
+
+                if (response.data.latestGameWeek) vm.latestGameWeek = response.data.latestGameWeek;
+
+                if (response.data.league) vm.league = response.data.league.id;else if (vm.appUnattached) vm.league = -1;
+            }
+        },
+        applyListeners: function applyListeners() {
+            var vm = this;
+
+            vm.$on('successfulfetch', function () {
+                vm.setOtherData();
+            });
+        }
+    },
+    watch: {
+        league: function league(newVal) {
+            var vm = this;
+
+            if (parseInt(newVal) > 0) vm.$router.push({ name: 'players.list', params: { leagueId: parseInt(newVal) } });else if (parseInt(newVal) === -1) vm.$router.push({ name: 'players.unattached' });else vm.$router.push({ name: 'players.index' });
+        }
+    }
+});
+
+/***/ }),
+/* 211 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "mt-3" }, [
+    _vm.fetchingData
+      ? _c("i", { staticClass: "fa fa-spinner fa-spin" })
+      : _vm._e(),
+    _vm._v(" "),
+    !_vm.fetchingData && _vm.appResourceCount
+      ? _c("div", [
+          _vm.appUserHasPermission("read")
+            ? _c(
+                "div",
+                [
+                  _c(
+                    "a",
+                    {
+                      staticClass: "btn btn-link pull-right",
+                      attrs: {
+                        href: "#",
+                        title: "Export All",
+                        "data-toggle": "tooltip"
+                      },
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          _vm.exportAll($event)
+                        }
+                      }
+                    },
+                    [_c("i", { staticClass: "fa fa-arrow-circle-o-down" })]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "clearfix mb-2" }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c(
+                        "form",
+                        {
+                          on: {
+                            submit: function($event) {
+                              $event.preventDefault()
+                              _vm.appDoSearch($event)
+                            }
+                          }
+                        },
+                        [
+                          _c("label", { staticClass: "form-control-label" }, [
+                            _vm._v(" ")
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model.trim",
+                                  value: _vm.appSearchText,
+                                  expression: "appSearchText",
+                                  modifiers: { trim: true }
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { type: "text", placeholder: "Search" },
+                              domProps: { value: _vm.appSearchText },
+                              on: {
+                                input: function($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.appSearchText = $event.target.value.trim()
+                                },
+                                blur: function($event) {
+                                  _vm.$forceUpdate()
+                                }
+                              }
+                            })
+                          ])
+                        ]
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-6" }, [
+                      _c("form", [
+                        _c(
+                          "label",
+                          {
+                            staticClass: "form-control-label",
+                            attrs: { for: "leagues" }
+                          },
+                          [_vm._v("League")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.league,
+                                expression: "league"
+                              }
+                            ],
+                            staticClass: "custom-select form-control",
+                            attrs: { id: "leagues" },
+                            on: {
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.league = $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              }
+                            }
+                          },
+                          [
+                            _c("option", { attrs: { value: "0" } }, [
+                              _vm._v("(All)")
+                            ]),
+                            _vm._v(" "),
+                            _vm._l(_vm.leagues, function(league) {
+                              return _c(
+                                "option",
+                                { domProps: { value: league.id } },
+                                [
+                                  _vm._v(
+                                    "\n                                " +
+                                      _vm._s(league.name) +
+                                      "\n                            "
+                                  )
+                                ]
+                              )
+                            }),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "-1" } }, [
+                              _vm._v("(Unattached)")
+                            ])
+                          ],
+                          2
+                        )
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "mt-4 mb-4" }, [
+                    _vm.appSelectedResources.length
+                      ? _c("form", { staticClass: "form-inline pull-left" }, [
+                          _c(
+                            "label",
+                            {
+                              staticClass: "form-control-label mr-sm-2",
+                              attrs: { for: "quick-edit" }
+                            },
+                            [_vm._v("Options")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.appQuickEditOption,
+                                  expression: "appQuickEditOption"
+                                }
+                              ],
+                              staticClass:
+                                "custom-select form-control mb-2 mb-sm-0 mr-sm-5",
+                              attrs: { id: "quick-edit" },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.appQuickEditOption = $event.target
+                                    .multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                }
+                              }
+                            },
+                            _vm._l(_vm.quickEditOptions, function(option) {
+                              return _vm.appUserHasPermission(option.value)
+                                ? _c(
+                                    "option",
+                                    { domProps: { value: option.value } },
+                                    [
+                                      _vm._v(
+                                        "\n                            " +
+                                          _vm._s(option.text) +
+                                          "\n                        "
+                                      )
+                                    ]
+                                  )
+                                : _vm._e()
+                            })
+                          )
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("form", { staticClass: "form-inline pull-right" }, [
+                      _c("span", { staticClass: "mr-3" }, [
+                        _vm._v(
+                          "Page " +
+                            _vm._s(_vm.appPagination.current_page) +
+                            " of " +
+                            _vm._s(_vm.appPagination.last_page) +
+                            " ["
+                        ),
+                        _c("b", [
+                          _vm._v(_vm._s(_vm.appPagination.total) + " items")
+                        ]),
+                        _vm._v("]")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "label",
+                        {
+                          staticClass: "form-control-label mr-sm-2",
+                          attrs: { for: "records_per_page" }
+                        },
+                        [_vm._v("Per Page")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.appPerPage,
+                              expression: "appPerPage"
+                            }
+                          ],
+                          staticClass:
+                            "custom-select form-control mb-2 mb-sm-0",
+                          attrs: { id: "records_per_page" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.appPerPage = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            }
+                          }
+                        },
+                        _vm._l(_vm.appPerPageOptions, function(option) {
+                          return _c(
+                            "option",
+                            { domProps: { value: option.value } },
+                            [
+                              _vm._v(
+                                "\n                            " +
+                                  _vm._s(option.text) +
+                                  "\n                        "
+                              )
+                            ]
+                          )
+                        })
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "clearfix" })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "table-responsive" }, [
+                    _c("table", { staticClass: "table table-striped" }, [
+                      _c("thead", [
+                        _c("tr", { staticClass: "pointer-cursor" }, [
+                          _vm.appUserHasPermission("update")
+                            ? _c("th", { staticClass: "normal-cursor" }, [
+                                _c(
+                                  "label",
+                                  {
+                                    staticClass:
+                                      "custom-control custom-checkbox mr-0"
+                                  },
+                                  [
+                                    _c("input", {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.appSelectAll,
+                                          expression: "appSelectAll"
+                                        }
+                                      ],
+                                      staticClass: "custom-control-input",
+                                      attrs: { type: "checkbox" },
+                                      domProps: {
+                                        checked: Array.isArray(_vm.appSelectAll)
+                                          ? _vm._i(_vm.appSelectAll, null) > -1
+                                          : _vm.appSelectAll
+                                      },
+                                      on: {
+                                        change: function($event) {
+                                          var $$a = _vm.appSelectAll,
+                                            $$el = $event.target,
+                                            $$c = $$el.checked ? true : false
+                                          if (Array.isArray($$a)) {
+                                            var $$v = null,
+                                              $$i = _vm._i($$a, $$v)
+                                            if ($$el.checked) {
+                                              $$i < 0 &&
+                                                (_vm.appSelectAll = $$a.concat([
+                                                  $$v
+                                                ]))
+                                            } else {
+                                              $$i > -1 &&
+                                                (_vm.appSelectAll = $$a
+                                                  .slice(0, $$i)
+                                                  .concat($$a.slice($$i + 1)))
+                                            }
+                                          } else {
+                                            _vm.appSelectAll = $$c
+                                          }
+                                        }
+                                      }
+                                    }),
+                                    _vm._v(" "),
+                                    _c("span", {
+                                      staticClass: "custom-control-indicator"
+                                    })
+                                  ]
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c(
+                            "th",
+                            {
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  _vm.appChangeSort("name")
+                                }
+                              }
+                            },
+                            [
+                              _vm._v("Name "),
+                              _c("span", {
+                                domProps: {
+                                  innerHTML: _vm._s(
+                                    _vm.appGetSortMarkup("name")
+                                  )
+                                }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "th",
+                            {
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  _vm.appChangeSort("fpl_id")
+                                }
+                              }
+                            },
+                            [
+                              _vm._v("FPL ID "),
+                              _c("span", {
+                                domProps: {
+                                  innerHTML: _vm._s(
+                                    _vm.appGetSortMarkup("fpl_id")
+                                  )
+                                }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "th",
+                            {
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  _vm.appChangeSort("team_name")
+                                }
+                              }
+                            },
+                            [
+                              _vm._v("Team Name "),
+                              _c("span", {
+                                domProps: {
+                                  innerHTML: _vm._s(
+                                    _vm.appGetSortMarkup("team_name")
+                                  )
+                                }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "th",
+                            {
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  _vm.appChangeSort("latest_points")
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "Game-week " +
+                                  _vm._s(_vm.latestGameWeek) +
+                                  " Points "
+                              ),
+                              _c("span", {
+                                domProps: {
+                                  innerHTML: _vm._s(
+                                    _vm.appGetSortMarkup("latest_points")
+                                  )
+                                }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "th",
+                            {
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  _vm.appChangeSort("total_points")
+                                }
+                              }
+                            },
+                            [
+                              _vm._v("Total Points "),
+                              _c("span", {
+                                domProps: {
+                                  innerHTML: _vm._s(
+                                    _vm.appGetSortMarkup("total_points")
+                                  )
+                                }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "th",
+                            {
+                              on: {
+                                click: function($event) {
+                                  $event.preventDefault()
+                                  _vm.appChangeSort("updated_at")
+                                }
+                              }
+                            },
+                            [
+                              _vm._v("Updated "),
+                              _c("span", {
+                                domProps: {
+                                  innerHTML: _vm._s(
+                                    _vm.appGetSortMarkup("updated_at")
+                                  )
+                                }
+                              })
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _vm.appUserHasPermission("update")
+                            ? _c("th")
+                            : _vm._e()
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.orderedAppResources, function(resource) {
+                          return _c("tr", [
+                            _vm.appUserHasPermission("update")
+                              ? _c("td", [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass:
+                                        "custom-control custom-checkbox mr-0"
+                                    },
+                                    [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.appSelectedResources,
+                                            expression: "appSelectedResources"
+                                          }
+                                        ],
+                                        staticClass: "custom-control-input",
+                                        attrs: { type: "checkbox" },
+                                        domProps: {
+                                          value: resource.id,
+                                          checked: Array.isArray(
+                                            _vm.appSelectedResources
+                                          )
+                                            ? _vm._i(
+                                                _vm.appSelectedResources,
+                                                resource.id
+                                              ) > -1
+                                            : _vm.appSelectedResources
+                                        },
+                                        on: {
+                                          change: function($event) {
+                                            var $$a = _vm.appSelectedResources,
+                                              $$el = $event.target,
+                                              $$c = $$el.checked ? true : false
+                                            if (Array.isArray($$a)) {
+                                              var $$v = resource.id,
+                                                $$i = _vm._i($$a, $$v)
+                                              if ($$el.checked) {
+                                                $$i < 0 &&
+                                                  (_vm.appSelectedResources = $$a.concat(
+                                                    [$$v]
+                                                  ))
+                                              } else {
+                                                $$i > -1 &&
+                                                  (_vm.appSelectedResources = $$a
+                                                    .slice(0, $$i)
+                                                    .concat($$a.slice($$i + 1)))
+                                              }
+                                            } else {
+                                              _vm.appSelectedResources = $$c
+                                            }
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("span", {
+                                        staticClass: "custom-control-indicator"
+                                      })
+                                    ]
+                                  )
+                                ])
+                              : _vm._e(),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(resource.name))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(resource.fpl_id))]),
+                            _vm._v(" "),
+                            _c("td", [_vm._v(_vm._s(resource.team_name))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(_vm._s(resource.latest_score.net_points))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(_vm._s(resource.latest_score.total_points))
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "span",
+                                {
+                                  attrs: {
+                                    title: _vm._f("dateToTheMinWithDayOfWeek")(
+                                      resource.updated_at
+                                    ),
+                                    "data-toggle": "tooltip"
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(
+                                      _vm._f("dateToTheDay")(
+                                        resource.updated_at
+                                      )
+                                    )
+                                  )
+                                ]
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _vm.appUserHasPermission("read")
+                              ? _c(
+                                  "td",
+                                  [
+                                    _c(
+                                      "router-link",
+                                      {
+                                        staticClass:
+                                          "btn btn-sm btn-outline-primary",
+                                        attrs: {
+                                          to: {
+                                            name: "players.view",
+                                            params: { id: resource.id }
+                                          }
+                                        }
+                                      },
+                                      [_c("i", { staticClass: "fa fa-eye" })]
+                                    )
+                                  ],
+                                  1
+                                )
+                              : _vm._e()
+                          ])
+                        })
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("pagination", {
+                    staticClass: "mt-5 mb-3",
+                    attrs: {
+                      pagination: _vm.appPagination,
+                      callback: _vm.fetchResources,
+                      options: _vm.appPaginationOptions
+                    }
+                  })
+                ],
+                1
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          !_vm.appUserHasPermission("read")
+            ? _c("div", [
+                _c("i", { staticClass: "fa fa-warning" }),
+                _vm._v(
+                  " " + _vm._s(_vm.appUnauthorisedErrorMessage) + "\n        "
+                )
+              ])
+            : _vm._e()
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    !_vm.fetchingData && !_vm.appResourceCount
+      ? _c("div", { staticClass: "mt-5" }, [
+          _vm._v("\n        No items found\n    ")
+        ])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-ff821b10", module.exports)
+  }
+}
+
+/***/ }),
+/* 212 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(213)
+/* template */
+var __vue_template__ = __webpack_require__(214)
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Players\\NewPlayer.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-48622d4a", Component.options)
+  } else {
+    hotAPI.reload("data-v-48622d4a", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 213 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    mounted: function mounted() {
+        this.$nextTick(function () {
+            this.appInitialiseTooltip();
+            this.goTime();
+        });
+    },
+    data: function data() {
+        return {
+            fetchingData: true,
+            resource: { fpl_id: '' },
+            validationErrors: { fpl_id: '' }
+        };
+    },
+
+    methods: {
+        goTime: function goTime() {
+            var vm = this;
+            var progress = vm.$Progress;
+
+            progress.start();
+            vm.appClearValidationErrors();
+
+            progress.finish();
+            vm.fetchingData = false;
+        },
+        createResource: function createResource() {
+            this.appCreateResource();
+        }
+    }
+});
+
+/***/ }),
+/* 214 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "mt-5" },
+    [
+      _vm.fetchingData
+        ? _c("i", { staticClass: "fa fa-spinner fa-spin" })
+        : _vm._e(),
+      _vm._v(" "),
+      !_vm.fetchingData
+        ? [
+            _vm.appUserHasPermission("create")
+              ? _c("div", [
+                  _c(
+                    "form",
+                    {
+                      on: {
+                        submit: function($event) {
+                          $event.preventDefault()
+                          _vm.createResource($event)
+                        }
+                      }
+                    },
+                    [
+                      _c("div", { staticClass: "form-group row" }, [
+                        _c(
+                          "label",
+                          {
+                            staticClass: "col-sm-3 form-control-label",
+                            attrs: {
+                              for: "fpl_id",
+                              title:
+                                "On your 'Points' screen on fantasypremierleague.com, this is the long number in the URL",
+                              "data-toggle": "tooltip"
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                        FPL Player ID\n                    "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "col-sm-5" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model.trim",
+                                value: _vm.resource.fpl_id,
+                                expression: "resource.fpl_id",
+                                modifiers: { trim: true }
+                              }
+                            ],
+                            staticClass: "form-control",
+                            class: _vm.validationErrors.fpl_id
+                              ? "is-invalid"
+                              : "",
+                            attrs: { type: "text", id: "fpl_id" },
+                            domProps: { value: _vm.resource.fpl_id },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.resource,
+                                  "fpl_id",
+                                  $event.target.value.trim()
+                                )
+                              },
+                              blur: function($event) {
+                                _vm.$forceUpdate()
+                              }
+                            }
+                          }),
+                          _vm._v(" "),
+                          _c("small", { staticClass: "invalid-feedback" }, [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(_vm.validationErrors.fpl_id) +
+                                "\n                        "
+                            )
+                          ])
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(0)
+                    ]
+                  )
+                ])
+              : _vm._e(),
+            _vm._v(" "),
+            !_vm.appUserHasPermission("create")
+              ? _c("div", [
+                  _c("i", { staticClass: "fa fa-warning" }),
+                  _vm._v(
+                    " " + _vm._s(_vm.appUnauthorisedErrorMessage) + "\n        "
+                  )
+                ])
+              : _vm._e()
+          ]
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group row" }, [
+      _c("div", { staticClass: "col-sm-9 ml-sm-auto" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary btn-outline-primary",
+            attrs: { type: "submit" }
+          },
+          [_vm._v("Fetch")]
+        )
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-48622d4a", module.exports)
+  }
+}
+
+/***/ }),
+/* 215 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(216)
+/* template */
+var __vue_template__ = __webpack_require__(217)
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Players\\ViewPlayer.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-ab224de6", Component.options)
+  } else {
+    hotAPI.reload("data-v-ab224de6", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 216 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    mounted: function mounted() {
+        this.$nextTick(function () {
+            this.appInitialiseTooltip();
+            this.showResource();
+        });
+    },
+    data: function data() {
+        return {
+            fetchingData: true,
+            resource: { id: '', name: '', fpl_id: '', team_name: '', total_points: 0, created_at: '', updated_at: '', scores: [], latest_score: null, leagues: [], leaguesUrl: '' },
+            orderBy: 'game_week',
+            order: -1
+        };
+    },
+
+    computed: {
+        flattenedLeagues: function flattenedLeagues() {
+            var vm = this;
+
+            return this.resource.leagues.length ? _.join(_.flatMapDeep(vm.resource.leagues, function (league) {
+                return "<i class='fa fa-link'></i> <a href='" + vm.resource.leaguesUrl + "/" + league.id + "/view'>" + league.name + "</a>";
+            }), ', ') : '-';
+        },
+        orderedScores: function orderedScores() {
+            return _.orderBy(this.resource.scores, [this.orderBy, 'game_week'], [this.order === 1 ? 'asc' : 'desc', 'desc']);
+        }
+    },
+    methods: {
+        showResource: function showResource() {
+            this.appShowResource();
+        },
+        changeSort: function changeSort(attr) {
+            var vm = this;
+            vm.order = _.toLower(vm.orderBy) === _.toLower(attr) ? vm.order * -1 : 1;
+            vm.orderBy = _.toLower(attr);
+        },
+        getSortMarkup: function getSortMarkup(attr) {
+            var vm = this;
+            var html = '';
+
+            if (_.toLower(vm.orderBy) === _.toLower(attr)) html = vm.order === 1 ? '&darr;' : '&uarr;';
+            return html;
+        },
+        exportPlayer: function exportPlayer() {
+            var vm = this;
+            window.location = vm.appResourceUrl + '/' + vm.resource.id + '/export-single';
+        }
+    }
+});
+
+/***/ }),
+/* 217 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "mt-5" },
+    [
+      _vm.fetchingData
+        ? _c("i", { staticClass: "fa fa-spinner fa-spin" })
+        : _vm._e(),
+      _vm._v(" "),
+      !_vm.fetchingData
+        ? [
+            _vm.appUserHasPermission("read")
+              ? _c("div", [
+                  _c("h3", [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.resource.name) +
+                        "\n            "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "col-sm-2 text-sm-right font-weight-bold"
+                      },
+                      [_vm._v("FPL ID:")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-10" }, [
+                      _vm._v(_vm._s(_vm.resource.fpl_id))
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "col-sm-2 text-sm-right font-weight-bold"
+                      },
+                      [_vm._v("Team Name:")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-10" }, [
+                      _vm._v(_vm._s(_vm.resource.team_name))
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "col-sm-2 text-sm-right font-weight-bold"
+                      },
+                      [_vm._v("Total Points:")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-10" }, [
+                      _vm._v(_vm._s(_vm.resource.latest_score.total_points))
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "col-sm-2 text-sm-right font-weight-bold",
+                        attrs: {
+                          title:
+                            "These are the leagues that have been fetched from fantasypremierleague.com",
+                          "data-toggle": "tooltip"
+                        }
+                      },
+                      [_vm._v("Leagues:")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", {
+                      staticClass: "col-sm-10",
+                      domProps: { innerHTML: _vm._s(_vm.flattenedLeagues) }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "col-sm-2 text-sm-right font-weight-bold"
+                      },
+                      [_vm._v("First Fetched:")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-10" }, [
+                      _vm._v(
+                        _vm._s(
+                          _vm._f("dateToTheMinute")(_vm.resource.created_at)
+                        )
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "col-sm-2 text-sm-right font-weight-bold"
+                      },
+                      [_vm._v("Last Fetched:")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-10" }, [
+                      _vm._v(
+                        _vm._s(
+                          _vm._f("dateToTheMinute")(_vm.resource.updated_at)
+                        )
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "row" }, [
+                    _c(
+                      "div",
+                      {
+                        staticClass: "col-sm-2 text-sm-right font-weight-bold"
+                      },
+                      [_vm._v("Export:")]
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-sm-10" }, [
+                      _c(
+                        "span",
+                        {
+                          staticClass: "btn btn-sm",
+                          on: {
+                            click: function($event) {
+                              $event.preventDefault()
+                              _vm.exportPlayer()
+                            }
+                          }
+                        },
+                        [_c("i", { staticClass: "fa fa-arrow-circle-down" })]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _vm.resource.scores.length
+                    ? _c("div", { staticClass: "table-responsive mt-3" }, [
+                        _c("table", { staticClass: "table table-striped" }, [
+                          _c("thead", [
+                            _c("tr", { staticClass: "pointer-cursor" }, [
+                              _c(
+                                "th",
+                                {
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      _vm.changeSort("game_week")
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v("Game-week "),
+                                  _c("span", {
+                                    domProps: {
+                                      innerHTML: _vm._s(
+                                        _vm.getSortMarkup("game_week")
+                                      )
+                                    }
+                                  })
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "th",
+                                {
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      _vm.changeSort("raw_points")
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v("Gross Points "),
+                                  _c("span", {
+                                    domProps: {
+                                      innerHTML: _vm._s(
+                                        _vm.getSortMarkup("raw_points")
+                                      )
+                                    }
+                                  })
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "th",
+                                {
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      _vm.changeSort("points_penalty")
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v("Points Penalty "),
+                                  _c("span", {
+                                    domProps: {
+                                      innerHTML: _vm._s(
+                                        _vm.getSortMarkup("points_penalty")
+                                      )
+                                    }
+                                  })
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "th",
+                                {
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      _vm.changeSort("net_points")
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v("Net Points "),
+                                  _c("span", {
+                                    domProps: {
+                                      innerHTML: _vm._s(
+                                        _vm.getSortMarkup("net_points")
+                                      )
+                                    }
+                                  })
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "th",
+                                {
+                                  on: {
+                                    click: function($event) {
+                                      $event.preventDefault()
+                                      _vm.changeSort("total_points")
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v("Total Points "),
+                                  _c("span", {
+                                    domProps: {
+                                      innerHTML: _vm._s(
+                                        _vm.getSortMarkup("total_points")
+                                      )
+                                    }
+                                  })
+                                ]
+                              )
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "tbody",
+                            _vm._l(_vm.orderedScores, function(score) {
+                              return _c("tr", [
+                                _c("th", { attrs: { scope: "row" } }, [
+                                  _vm._v("Game-week " + _vm._s(score.game_week))
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(score.raw_points))]),
+                                _vm._v(" "),
+                                _c("td", [
+                                  _vm._v(_vm._s(score.points_penalty))
+                                ]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(score.net_points))]),
+                                _vm._v(" "),
+                                _c("td", [_vm._v(_vm._s(score.total_points))])
+                              ])
+                            })
+                          )
+                        ])
+                      ])
+                    : _vm._e()
+                ])
+              : _c("div", [
+                  _c("i", { staticClass: "fa fa-warning" }),
+                  _vm._v(
+                    " " + _vm._s(_vm.appUnauthorisedErrorMessage) + "\n        "
+                  )
+                ])
+          ]
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-ab224de6", module.exports)
+  }
+}
+
+/***/ }),
+/* 218 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(219)
+/* template */
+var __vue_template__ = __webpack_require__(220)
+/* template functional */
+  var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\Players\\EditPlayer.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-623dd232", Component.options)
+  } else {
+    hotAPI.reload("data-v-623dd232", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 219 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    mounted: function mounted() {
+        this.$nextTick(function () {
+            this.getResource();
+        });
+    },
+    data: function data() {
+        return {
+            fetchingData: true,
+            resource: { first_name: '', last_name: '', email: '', active: '', mailing_lists: [] },
+            validationErrors: { first_name: '', last_name: '', email: '' },
+            mailing_lists: [],
+            selected_mailing_lists: [],
+            listRoute: 'admin_subscribers.index',
+            moreOptions: [{ text: 'Select Option', value: '' }, { text: 'Delete Subscriber', value: 'delete' }],
+            moreOption: ''
+        };
+    },
+
+    computed: {
+        sortedMailingLists: function sortedMailingLists() {
+            return _.sortBy(this.mailing_lists, ['name']);
+        },
+        flattenedMLists: function flattenedMLists() {
+            return _.flatMapDeep(this.selected_mailing_lists, function (mList) {
+                return mList.id;
+            });
+        },
+        name: function name() {
+            return this.resource.first_name + ' ' + this.resource.last_name;
+        }
+    },
+    methods: {
+        getResource: function getResource() {
+            var vm = this;
+            var progress = vm.$Progress;
+
+            progress.start();
+            vm.appClearValidationErrors();
+
+            vm.$http.get(vm.appResourceUrl + '/' + vm.id + '/edit').then(function (response) {
+                if (response.data) {
+                    if (response.data.mailing_lists && response.data.mailing_lists.length) vm.mailing_lists = response.data.mailing_lists;
+                    vm.resource = response.data.resource;
+
+                    if (vm.resource.mailing_lists) {
+                        _.forEach(vm.resource.mailing_lists, function (mailing_list) {
+                            vm.selected_mailing_lists.push({ id: mailing_list.id, name: mailing_list.name });
+                        });
+                    }
+                }
+
+                progress.finish();
+                vm.fetchingData = false;
+            }, function (error) {
+                if (error.status && error.status === 403 && error.data) vm.appCustomErrorAlert(error.data.error);else vm.appGeneralErrorAlert();
+
+                progress.fail();
+                vm.fetchingData = false;
+            });
+        },
+        updateResource: function updateResource() {
+            this.appUpdateResource();
+        },
+        deleteResource: function deleteResource() {
+            this.appDeleteResource();
+        }
+    },
+    watch: {
+        moreOption: function moreOption(action) {
+            var vm = this;
+
+            if (action.length) {
+                if (action === 'delete' && vm.appUserHasPermission(action)) {
+                    swal({ title: 'Hey, are you sure about this?', type: "warning", showCancelButton: true, confirmButtonText: _.capitalize(action) }, function (confirmed) {
+                        if (confirmed) vm.deleteResource();else vm.moreOption = '';
+                    });
+                }
+            }
+        },
+
+        'selected_mailing_lists': function selected_mailing_lists(newVal) {
+            this.resource.mailing_lists = this.flattenedMLists;
+        }
+    }
+});
+
+/***/ }),
+/* 220 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "mt-5" },
+    [
+      _vm.fetchingData
+        ? _c("i", { staticClass: "fa fa-spinner fa-spin" })
+        : _vm._e(),
+      _vm._v(" "),
+      !_vm.fetchingData
+        ? [
+            _vm.appUserHasPermission("update")
+              ? _c("div", [
+                  _c("h3", { staticClass: "mb-5" }, [
+                    _c("i", { staticClass: "fa fa-edit" }),
+                    _vm._v(" " + _vm._s(_vm.name) + "\n            ")
+                  ]),
+                  _vm._v(" "),
+                  !_vm.fetchingData
+                    ? _c(
+                        "form",
+                        {
+                          on: {
+                            submit: function($event) {
+                              $event.preventDefault()
+                              _vm.updateResource($event)
+                            }
+                          }
+                        },
+                        [
+                          _c("div", { staticClass: "form-group row" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "col-md-4 form-control-label",
+                                attrs: { for: "first_name" }
+                              },
+                              [_vm._v("First Name")]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-8" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model.trim",
+                                    value: _vm.resource.first_name,
+                                    expression: "resource.first_name",
+                                    modifiers: { trim: true }
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                class: _vm.validationErrors.first_name
+                                  ? "is-invalid"
+                                  : "",
+                                attrs: { type: "text", id: "first_name" },
+                                domProps: { value: _vm.resource.first_name },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.resource,
+                                      "first_name",
+                                      $event.target.value.trim()
+                                    )
+                                  },
+                                  blur: function($event) {
+                                    _vm.$forceUpdate()
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("small", { staticClass: "invalid-feedback" }, [
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(_vm.validationErrors.first_name) +
+                                    "\n                        "
+                                )
+                              ])
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group row" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "col-md-4 form-control-label",
+                                attrs: { for: "last_name" }
+                              },
+                              [_vm._v("Last Name")]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-8" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model.trim",
+                                    value: _vm.resource.last_name,
+                                    expression: "resource.last_name",
+                                    modifiers: { trim: true }
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                class: _vm.validationErrors.last_name
+                                  ? "is-invalid"
+                                  : "",
+                                attrs: { type: "text", id: "last_name" },
+                                domProps: { value: _vm.resource.last_name },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.resource,
+                                      "last_name",
+                                      $event.target.value.trim()
+                                    )
+                                  },
+                                  blur: function($event) {
+                                    _vm.$forceUpdate()
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("small", { staticClass: "invalid-feedback" }, [
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(_vm.validationErrors.last_name) +
+                                    "\n                        "
+                                )
+                              ])
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group row" }, [
+                            _c(
+                              "label",
+                              {
+                                staticClass: "col-md-4 form-control-label",
+                                attrs: { for: "email" }
+                              },
+                              [_vm._v("Email")]
+                            ),
+                            _vm._v(" "),
+                            _c("div", { staticClass: "col-md-8" }, [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model.trim",
+                                    value: _vm.resource.email,
+                                    expression: "resource.email",
+                                    modifiers: { trim: true }
+                                  }
+                                ],
+                                staticClass: "form-control",
+                                class: _vm.validationErrors.email
+                                  ? "is-invalid"
+                                  : "",
+                                attrs: { type: "text", id: "email" },
+                                domProps: { value: _vm.resource.email },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      _vm.resource,
+                                      "email",
+                                      $event.target.value.trim()
+                                    )
+                                  },
+                                  blur: function($event) {
+                                    _vm.$forceUpdate()
+                                  }
+                                }
+                              }),
+                              _vm._v(" "),
+                              _c("small", { staticClass: "invalid-feedback" }, [
+                                _vm._v(
+                                  "\n                            " +
+                                    _vm._s(_vm.validationErrors.email) +
+                                    "\n                        "
+                                )
+                              ])
+                            ])
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "form-group row checkbox" },
+                            [
+                              _c(
+                                "div",
+                                { staticClass: "col-md-8 ml-md-auto" },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass:
+                                        "custom-control custom-checkbox"
+                                    },
+                                    [
+                                      _c("input", {
+                                        directives: [
+                                          {
+                                            name: "model",
+                                            rawName: "v-model",
+                                            value: _vm.resource.active,
+                                            expression: "resource.active"
+                                          }
+                                        ],
+                                        staticClass: "custom-control-input",
+                                        attrs: { type: "checkbox" },
+                                        domProps: {
+                                          checked: Array.isArray(
+                                            _vm.resource.active
+                                          )
+                                            ? _vm._i(
+                                                _vm.resource.active,
+                                                null
+                                              ) > -1
+                                            : _vm.resource.active
+                                        },
+                                        on: {
+                                          change: function($event) {
+                                            var $$a = _vm.resource.active,
+                                              $$el = $event.target,
+                                              $$c = $$el.checked ? true : false
+                                            if (Array.isArray($$a)) {
+                                              var $$v = null,
+                                                $$i = _vm._i($$a, $$v)
+                                              if ($$el.checked) {
+                                                $$i < 0 &&
+                                                  (_vm.resource.active = $$a.concat(
+                                                    [$$v]
+                                                  ))
+                                              } else {
+                                                $$i > -1 &&
+                                                  (_vm.resource.active = $$a
+                                                    .slice(0, $$i)
+                                                    .concat($$a.slice($$i + 1)))
+                                              }
+                                            } else {
+                                              _vm.$set(
+                                                _vm.resource,
+                                                "active",
+                                                $$c
+                                              )
+                                            }
+                                          }
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c("span", {
+                                        staticClass: "custom-control-indicator"
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "span",
+                                        {
+                                          staticClass:
+                                            "custom-control-description"
+                                        },
+                                        [_vm._v("Active")]
+                                      )
+                                    ]
+                                  )
+                                ]
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _vm.mailing_lists.length
+                            ? _c("div", { staticClass: "form-group row" }, [
+                                _c(
+                                  "label",
+                                  {
+                                    staticClass: "col-md-4 form-control-label"
+                                  },
+                                  [_vm._v("Mailing Lists")]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "div",
+                                  { staticClass: "col-md-8" },
+                                  [
+                                    _c("v-select", {
+                                      attrs: {
+                                        options: _vm.sortedMailingLists,
+                                        label: "name",
+                                        placeholder: "No Mailing Lists",
+                                        multiple: ""
+                                      },
+                                      model: {
+                                        value: _vm.selected_mailing_lists,
+                                        callback: function($$v) {
+                                          _vm.selected_mailing_lists = $$v
+                                        },
+                                        expression: "selected_mailing_lists"
+                                      }
+                                    })
+                                  ],
+                                  1
+                                )
+                              ])
+                            : _vm._e(),
+                          _vm._v(" "),
+                          _c("div", { staticClass: "form-group row" }, [
+                            _c("div", { staticClass: "col-md-8 ml-md-auto" }, [
+                              _c(
+                                "button",
+                                {
+                                  staticClass:
+                                    "btn btn-primary btn-outline-primary",
+                                  attrs: { type: "submit" }
+                                },
+                                [_vm._v("Update")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "form",
+                                {
+                                  staticClass: "form-inline pull-right",
+                                  attrs: { action: "" }
+                                },
+                                [
+                                  _c(
+                                    "label",
+                                    {
+                                      staticClass: "form-control-label mr-sm-2",
+                                      attrs: { for: "more-options" }
+                                    },
+                                    [_vm._v("More Options")]
+                                  ),
+                                  _vm._v(" "),
+                                  _c(
+                                    "select",
+                                    {
+                                      directives: [
+                                        {
+                                          name: "model",
+                                          rawName: "v-model",
+                                          value: _vm.moreOption,
+                                          expression: "moreOption"
+                                        }
+                                      ],
+                                      staticClass:
+                                        "custom-select form-control mb-2 mb-sm-0",
+                                      attrs: { id: "more-options" },
+                                      on: {
+                                        change: function($event) {
+                                          var $$selectedVal = Array.prototype.filter
+                                            .call(
+                                              $event.target.options,
+                                              function(o) {
+                                                return o.selected
+                                              }
+                                            )
+                                            .map(function(o) {
+                                              var val =
+                                                "_value" in o
+                                                  ? o._value
+                                                  : o.value
+                                              return val
+                                            })
+                                          _vm.moreOption = $event.target
+                                            .multiple
+                                            ? $$selectedVal
+                                            : $$selectedVal[0]
+                                        }
+                                      }
+                                    },
+                                    _vm._l(_vm.moreOptions, function(option) {
+                                      return _vm.appUserHasPermission(
+                                        option.value
+                                      )
+                                        ? _c(
+                                            "option",
+                                            {
+                                              domProps: { value: option.value }
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                                    " +
+                                                  _vm._s(option.text) +
+                                                  "\n                                "
+                                              )
+                                            ]
+                                          )
+                                        : _vm._e()
+                                    })
+                                  )
+                                ]
+                              )
+                            ])
+                          ])
+                        ]
+                      )
+                    : _vm._e()
+                ])
+              : _c("div", [
+                  _c("i", { staticClass: "fa fa-warning" }),
+                  _vm._v(
+                    " " + _vm._s(_vm.appUnauthorisedErrorMessage) + "\n        "
+                  )
+                ])
+          ]
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-623dd232", module.exports)
+  }
+}
+
+/***/ }),
+/* 221 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

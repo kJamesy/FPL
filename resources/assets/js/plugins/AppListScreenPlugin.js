@@ -63,7 +63,21 @@ const AppListScreenPlugin = {
                     set(value) {
                         this.appSelectedResources = value ? this.appResourcesIds : [];
                     }
-                }
+                },
+                appBelongingToLeague() {
+                    return this.$route.params.leagueId ? this.$route.params.leagueId: 0;
+                },
+                appUnattached() {
+                    return _.includes(this.$route.path, 'unattached');
+                },
+                appBelongingToOrUnattached() {
+                    if ( this.appBelongingToLeague )
+                        return this.$route.params.leagueId;
+                    else if ( this.appUnattached )
+                        return -1;
+                    else
+                        return 0;
+                },
             },
             methods: {
                 appFetchResources(vm, orderAttr, orderToggle) {

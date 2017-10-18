@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\League;
+use App\Player;
 use App\Policies\LeaguePolicy;
+use App\Policies\PlayerPolicy;
 use App\Policies\UserPolicy;
 use App\User;
 use Illuminate\Support\Facades\Gate;
@@ -19,6 +21,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         User::class => UserPolicy::class,
         League::class => LeaguePolicy::class,
+	    Player::class => PlayerPolicy::class,
     ];
 
     /**

@@ -14,12 +14,24 @@
                             </div>
                         </form>
                     </div>
+                    <div class="col-md-6">
+                        <form>
+                            <label class="form-control-label" for="leagues">League</label>
+                            <select class="custom-select form-control" v-model="league" id="leagues">
+                                <option value="0">(All)</option>
+                                <option v-for="league in leagues" v-bind:value="league.id">
+                                    {{ league.name }}
+                                </option>
+                                <option value="-1">(Unattached)</option>
+                            </select>
+                        </form>
+                    </div>
                 </div>
                 <div class="mt-4 mb-4">
                     <form class="form-inline pull-left" v-if="appSelectedResources.length">
                         <label class="form-control-label mr-sm-2" for="quick-edit">Options</label>
                         <select class="custom-select form-control mb-2 mb-sm-0 mr-sm-5" v-model="appQuickEditOption" id="quick-edit">
-                            <option v-for="option in quickEditOptions" v-bind:value="option.value">
+                            <option v-for="option in quickEditOptions" v-bind:value="option.value" v-if="appUserHasPermission(option.value)">
                                 {{ option.text }}
                             </option>
                         </select>
@@ -47,10 +59,9 @@
                                 </th>
                                 <th v-on:click.prevent="appChangeSort('name')">Name <span v-html="appGetSortMarkup('name')"></span></th>
                                 <th v-on:click.prevent="appChangeSort('fpl_id')">FPL ID <span v-html="appGetSortMarkup('fpl_id')"></span></th>
-                                <th v-on:click.prevent="appChangeSort('players_count')">Total Players <span v-html="appGetSortMarkup('players_count')"></span></th>
-                                <th v-on:click.prevent="appChangeSort('admin_fpl_id')">Join Code <span v-html="appGetSortMarkup('admin_fpl_id')"></span></th>
-                                <th v-on:click.prevent="appChangeSort('admin_name')">Admin <span v-html="appGetSortMarkup('admin_name')"></span></th>
-                                <th v-on:click.prevent="appChangeSort('admin_team_name')">Admin's Team <span v-html="appGetSortMarkup('admin_team_name')"></span></th>
+                                <th v-on:click.prevent="appChangeSort('team_name')">Team Name <span v-html="appGetSortMarkup('team_name')"></span></th>
+                                <th v-on:click.prevent="appChangeSort('latest_points')">Game-week {{ latestGameWeek }} Points <span v-html="appGetSortMarkup('latest_points')"></span></th>
+                                <th v-on:click.prevent="appChangeSort('total_points')">Total Points <span v-html="appGetSortMarkup('total_points')"></span></th>
                                 <th v-on:click.prevent="appChangeSort('updated_at')" >Updated <span v-html="appGetSortMarkup('updated_at')"></span></th>
                                 <th v-if="appUserHasPermission('update')"></th>
                             </tr>
@@ -65,13 +76,12 @@
                                 </td>
                                 <td>{{ resource.name }}</td>
                                 <td>{{ resource.fpl_id }}</td>
-                                <td>{{ resource.players_count }}</td>
-                                <td v-html="getAutoJoinLink(resource.admin_fpl_id + '-' + resource.fpl_id)"></td>
-                                <td>{{ resource.admin_name }}</td>
-                                <td>{{ resource.admin_team_name }}</td>
+                                <td>{{ resource.team_name }}</td>
+                                <td>{{ resource.latest_score.net_points }}</td>
+                                <td>{{ resource.latest_score.total_points }}</td>
                                 <td><span v-bind:title="resource.updated_at | dateToTheMinWithDayOfWeek" data-toggle="tooltip">{{ resource.updated_at | dateToTheDay }}</span></td>
-                                <td>
-                                    <router-link v-bind:to="{ name: 'leagues.view', params: { id: resource.id }}" class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></router-link>
+                                <td v-if="appUserHasPermission('read')">
+                                    <router-link v-bind:to="{ name: 'players.view', params: { id: resource.id }}" class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></router-link>
                                 </td>
                             </tr>
                         </tbody>
@@ -80,13 +90,14 @@
 
                 <pagination :pagination="appPagination" :callback="fetchResources" :options="appPaginationOptions" class="mt-5 mb-3"></pagination>
             </div>
-            <div v-else="">
+            <div v-if="! appUserHasPermission('read')">
                 <i class="fa fa-warning"></i> {{ appUnauthorisedErrorMessage }}
             </div>
         </div>
         <div v-if="! fetchingData && ! appResourceCount" class="mt-5">
             No items found
         </div>
+
     </div>
 </template>
 
@@ -96,7 +107,9 @@
             this.$nextTick(function() {
                 this.appInitialiseSettings();
                 this.appInitialiseTooltip();
+                this.belongingTo = this.appBelongingToOrUnattached;
                 this.fetchResources();
+                this.applyListeners();
             });
         },
         data() {
@@ -106,6 +119,9 @@
                     { text: 'Select Option', value: '' },
                     { text: 'Export', value: 'export' },
                 ],
+                league: 0,
+                leagues: [],
+                latestGameWeek: 0
             }
         },
         methods: {
@@ -118,8 +134,41 @@
             exportAll() {
                 this.appExportAll();
             },
-            getAutoJoinLink(code) {
-                return "<a target='_blank' href='https://fantasy.premierleague.com?autojoin-code=" + code + "'><i class='fa fa-external-link'></i> " + code + "</a>";
+            setOtherData() {
+                let vm = this;
+                if ( typeof vm.appFetchResponse !== 'undefined' ) {
+                    let response = vm.appFetchResponse;
+
+                    if ( response.data.leagues )
+                        vm.leagues = response.data.leagues;
+
+                    if ( response.data.latestGameWeek )
+                        vm.latestGameWeek = response.data.latestGameWeek;
+
+                    if ( response.data.league )
+                        vm.league = response.data.league.id;
+                    else if ( vm.appUnattached )
+                        vm.league = -1;
+                }
+            },
+            applyListeners() {
+                let vm = this;
+
+                vm.$on('successfulfetch', function () {
+                    vm.setOtherData();
+                });
+            }
+        },
+        watch: {
+            league(newVal) {
+                let vm = this;
+
+                if ( parseInt(newVal) > 0 )
+                    vm.$router.push({ name: 'players.list', params: {leagueId: parseInt(newVal)} });
+                else if ( parseInt(newVal) === -1 )
+                    vm.$router.push({ name: 'players.unattached' });
+                else
+                    vm.$router.push({ name: 'players.index' });
             }
         },
     }
