@@ -65258,13 +65258,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             fetchingData: true,
-            quickEditOptions: [{ text: 'Select Option', value: '' }, { text: 'Export', value: 'export' }],
+            quickEditOptions: [{ text: 'Select Option', value: '' }],
             league: 0,
             leagues: [],
             latestGw: parseInt(window.latestGameWeek),
-            startGw: parseInt(window.latestGameWeek),
-            endGw: parseInt(window.latestGameWeek),
-            sliderRange: [parseInt(window.latestGameWeek), parseInt(window.latestGameWeek)]
+            startGw: parseInt(window.startGameWeek),
+            endGw: parseInt(window.endGameWeek),
+            sliderRange: [parseInt(window.startGameWeek), parseInt(window.endGameWeek)]
         };
     },
 
@@ -65327,11 +65327,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
                 if (response.data.leagues) vm.leagues = response.data.leagues;
 
-                if (response.data.latestGameWeek) vm.latestGw = response.data.latestGameWeek;
+                if (response.data.latestGameWeek) {
+                    vm.latestGw = response.data.latestGameWeek;
+                    window.latestGameWeek = vm.latestGw;
+                }
 
-                if (response.data.startGw) vm.startGw = response.data.startGw;
+                if (response.data.startGw) {
+                    vm.startGw = response.data.startGw;
+                    window.startGameWeek = vm.startGw;
+                }
 
-                if (response.data.endGw) vm.endGw = response.data.endGw;
+                if (response.data.endGw) {
+                    vm.endGw = response.data.endGw;
+                    window.endGameWeek = vm.endGw;
+                }
 
                 if (response.data.league) vm.league = response.data.league.id;else if (vm.appUnattached) vm.league = -1;
             }
@@ -65402,25 +65411,6 @@ var render = function() {
             ? _c(
                 "div",
                 [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "btn btn-link pull-right",
-                      attrs: {
-                        href: "#",
-                        title: "Export All",
-                        "data-toggle": "tooltip"
-                      },
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          _vm.exportAll($event)
-                        }
-                      }
-                    },
-                    [_c("i", { staticClass: "fa fa-arrow-circle-o-down" })]
-                  ),
-                  _vm._v(" "),
                   _c("div", { staticClass: "clearfix mb-2" }),
                   _vm._v(" "),
                   _c("div", { staticClass: "row" }, [

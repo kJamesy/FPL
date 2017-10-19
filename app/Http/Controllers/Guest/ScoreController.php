@@ -42,8 +42,8 @@ class ScoreController extends Controller
 		$this->friendlyName = 'Score';
 		$this->friendlyNamePlural = 'Scores';
 		$this->latestGameWeek = Score::findLatestGameWeek();
-		$this->startGw = 1;
-		$this->endGw = 4;
+		$this->startGw = $this->latestGameWeek > 4 ? ($this->latestGameWeek - 3) : 4;
+		$this->endGw = $this->latestGameWeek;
 	}
 
 	/**
@@ -91,6 +91,12 @@ class ScoreController extends Controller
 
 				$league = $belongingTo ? League::findResource($belongingTo) : null;
 				$leagues = League::getAttachedResources();
+
+//				cache()->forget('start_game_week');
+//				cache()->forget('end_game_week');
+
+				cache()->forever('start_game_week', $startGw);
+				cache()->forever('end_game_week', $endGw);
 
 				if ( $resources->count() )
 					return response()->json(compact('resources', 'league', 'leagues', 'latestGameWeek', 'startGw', 'endGw'));

@@ -11,7 +11,9 @@
             base: '{{ explode( $_SERVER['SERVER_NAME'], route('scores.index'))[1] }}',
             admin: '{{ route('scores.index') }}',
         };
-        latestGameWeek = '{!! $latestGameWeek !!}'
+        latestGameWeek = '{!! $latestGameWeek !!}';
+        startGameWeek = '{!! cache()->get('start_game_week') !!}';
+        endGameWeek = '{!! cache()->get('end_game_week') !!}';
     </script>
 @endsection
 

@@ -3,7 +3,7 @@
         <i class="fa fa-spinner fa-spin" v-if="fetchingData"></i>
         <div v-if="! fetchingData && appResourceCount">
             <div v-if="appUserHasPermission('read')">
-                <a href="#" v-on:click.prevent="exportAll" class="btn btn-link pull-right" title="Export All" data-toggle="tooltip"><i class="fa fa-arrow-circle-o-down"></i></a>
+                <!--<a href="#" v-on:click.prevent="exportAll" class="btn btn-link pull-right" title="Export All" data-toggle="tooltip"><i class="fa fa-arrow-circle-o-down"></i></a>-->
                 <div class="clearfix mb-2"></div>
                 <div class="row">
                     <div class="col-md-6">
@@ -131,14 +131,14 @@
                 fetchingData: true,
                 quickEditOptions: [
                     { text: 'Select Option', value: '' },
-                    { text: 'Export', value: 'export' },
+//                    { text: 'Export', value: 'export' },
                 ],
                 league: 0,
                 leagues: [],
                 latestGw: parseInt(window.latestGameWeek),
-                startGw: parseInt(window.latestGameWeek),
-                endGw: parseInt(window.latestGameWeek),
-                sliderRange: [parseInt(window.latestGameWeek), parseInt(window.latestGameWeek)],
+                startGw: parseInt(window.startGameWeek),
+                endGw: parseInt(window.endGameWeek),
+                sliderRange: [parseInt(window.startGameWeek), parseInt(window.endGameWeek)],
             }
         },
         computed: {
@@ -201,14 +201,20 @@
                     if ( response.data.leagues )
                         vm.leagues = response.data.leagues;
 
-                    if ( response.data.latestGameWeek )
+                    if ( response.data.latestGameWeek ) {
                         vm.latestGw = response.data.latestGameWeek;
+                        window.latestGameWeek = vm.latestGw;
+                    }
 
-                    if ( response.data.startGw )
+                    if ( response.data.startGw ) {
                         vm.startGw = response.data.startGw;
+                        window.startGameWeek = vm.startGw;
+                    }
 
-                    if ( response.data.endGw )
+                    if ( response.data.endGw ) {
                         vm.endGw = response.data.endGw;
+                        window.endGameWeek = vm.endGw;
+                    }
 
                     if ( response.data.league )
                         vm.league = response.data.league.id;
