@@ -7,4 +7,9 @@
             <a class="nav-link @yield('players_active')" href="{{ route('players.index') }}">Players</a>
         </li>
     @endif
+    @if ( (array_key_exists('read_scores', $permissions) && $permissions['read_scores']) || ! array_key_exists('read_scores', $permissions) )
+        <li class="nav-item">
+            <a class="nav-link @yield('scores_active')" href="{{ route('scores.index') }}">Scores</a>
+        </li>
+    @endif
 </ul>

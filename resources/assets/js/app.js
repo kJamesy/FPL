@@ -128,7 +128,6 @@ import Players from './components/Players/Players.vue';
 import PlayersAll from './components/Players/AllPlayers.vue';
 import PlayersNew from './components/Players/NewPlayer.vue';
 import PlayersView from './components/Players/ViewPlayer.vue';
-import PlayersEdit from './components/Players/EditPlayer.vue';
 
 if ( $('#players-app').length ) {
     let router = new VueRouter({
@@ -141,7 +140,6 @@ if ( $('#players-app').length ) {
             { path: '/unattached', name: 'players.unattached', component: PlayersAll },
             { path: '/create', name: 'players.create', component: PlayersNew },
             { path: '/:id(\\d+)/view', name: 'players.view', component: PlayersView },
-            { path: '/:id(\\d+)/edit', name: 'players.edit', component: PlayersEdit },
             { path: '*', redirect: { name: 'players.index' } }
         ]
     });
@@ -150,6 +148,34 @@ if ( $('#players-app').length ) {
         el: '#players-app',
         components: {
             Players
+        },
+        router: router
+    });
+}
+
+/**
+ * Scores
+ */
+import Scores from './components/Scores/Scores.vue';
+import ScoresAll from './components/Scores/AllScores.vue';
+
+if ( $('#scores-app').length ) {
+    let router = new VueRouter({
+        mode: 'history',
+        base: links.base,
+        linkActiveClass: 'active',
+        routes: [
+            { path: '/', name: 'scores.index', component: ScoresAll },
+            { path: '/:leagueId(\\d+)/in-league', name: 'scores.list', component: ScoresAll },
+            { path: '/unattached', name: 'scores.unattached', component: ScoresAll },
+            { path: '*', redirect: { name: 'scores.index' } }
+        ]
+    });
+
+    new Vue({
+        el: '#scores-app',
+        components: {
+            Scores
         },
         router: router
     });

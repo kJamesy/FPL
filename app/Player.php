@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Laravel\Scout\Searchable;
 
 class Player extends Model
@@ -17,10 +18,12 @@ class Player extends Model
 	protected $fillable = ['fpl_id', 'name', 'team_name'];
 
 	/**
-	 * Custom attribute
+	 * Cast these attributes
 	 * @var array
 	 */
-	protected $appends = ['latest_score'];
+	protected $casts = [
+		'period_total' => 'integer',
+	];
 
 	/**
 	 * Validation rules
@@ -46,15 +49,6 @@ class Player extends Model
 	public function scores()
 	{
 		return $this->hasMany(Score::class)->orderBy('game_week', 'DESC');
-	}
-
-	/**
-	 * Get latest score
-	 * @return null
-	 */
-	public function getLatestScoreAttribute()
-	{
-		return $this->scores ? $this->scores->first() : null;
 	}
 
 	/**
@@ -87,7 +81,7 @@ class Player extends Model
 	 */
 	public function scopeHasLatestScores($query)
 	{
-		$latestGameWeek = Score::findLatestScoredGameWeek();
+		$latestGameWeek = Score::findLatestGameWeek();
 
 		return $query->whereHas('scores', function($q) use ($latestGameWeek) {
 			$q->where('game_week', $latestGameWeek);
@@ -117,13 +111,14 @@ class Player extends Model
 	 */
 	public static function getResources($leagueId = 0, $hasLatestScores = false, $selected = [], $orderBy = 'updated_at', $order = 'desc', $paginate = null)
 	{
-		if ( $orderBy == 'latest_points' || $orderBy == 'total_points' ) {
-			$query = static::join('scores', function($join) {
-				$join->on('scores.player_id', '=', 'players.id')->whereRaw("game_week = (select max(`game_week`) from `scores`)");
-			})->select('players.*', 'scores.net_points AS latest_points', 'scores.total_points AS total_points', 'scores.player_id');
-		}
-		else
-			$query = static::with('leagues')->with('scores');
+		$latestGw = Score::findLatestGameWeek();
+
+		$query = static::join('scores', 'scores.player_id', '=', 'players.id');
+
+		$rawSubQuery = "COALESCE((SELECT net_points FROM scores WHERE game_week = $latestGw AND player_id = players.id), 0) AS latest_points,";
+		$rawSubQuery .= "COALESCE((SELECT total_points FROM scores WHERE game_week = $latestGw AND player_id = players.id), 0) AS total_points";
+
+		$query->select('players.*', DB::raw($rawSubQuery));
 
 		if ( $leagueId === -1 )
 			$query->isUnattached();
@@ -136,7 +131,7 @@ class Player extends Model
 		if ( count($selected) )
 			$query->whereIn('id', $selected);
 
-		$query->orderBy($orderBy, $order);
+		$query->orderBy($orderBy, $order)->groupBy('players.id');
 
 		return (int) $paginate ? $query->paginate($paginate) : $query->get();
 	}
@@ -156,7 +151,17 @@ class Player extends Model
 		$searchQuery->limit = 5000;
 		$results = $searchQuery->get()->pluck('id');
 
-		$query = static::whereIn('id', $results);
+		$latestGw = Score::findLatestGameWeek();
+
+		$query = static::join('scores', 'scores.player_id', '=', 'players.id');
+
+		$rawSubQuery = "COALESCE((SELECT net_points FROM scores WHERE game_week = $latestGw AND player_id = players.id), 0) AS latest_points,";
+		$rawSubQuery .= "COALESCE((SELECT total_points FROM scores WHERE game_week = $latestGw AND player_id = players.id), 0) AS total_points";
+
+		$query->select('players.*', DB::raw($rawSubQuery));
+
+		$query->whereIn('players.id', $results);
+
 
 		if ( $leagueId )
 			$query->inLeagues([$leagueId]);
@@ -164,7 +169,7 @@ class Player extends Model
 		if ( $hasLatestScores )
 			$query->hasLatestScores();
 
-		return $query->paginate($paginate);
+		return $query->groupBy('players.id')->paginate($paginate);
 	}
 
 

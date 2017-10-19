@@ -2,6 +2,7 @@
 
 namespace App\Exporters;
 
+use App\Score;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ResourceExporter
@@ -88,17 +89,16 @@ class ResourceExporter
 		return Excel::create($this->exportFileName, function($excel) {
 			$resources = $this->resources;
 			$exportArr = [];
+			$latestGw = Score::findLatestGameWeek();
 
 			if ( count($resources) ) {
 				foreach ($resources as $resource) {
 					$exportArr[] = [
 						'Name' => $resource->name,
 						'FPL ID' => $resource->fpl_id,
-						'Team Name' => $resource->team_name,
-						"Game-week {$resource->latest_score->game_week} Points" => $resource->latest_score->net_points,
-						"Game-week {$resource->latest_score->game_week} Gross Points" => $resource->latest_score->raw_points,
-						"Game-week {$resource->latest_score->game_week} Points Penalty" => $resource->latest_score->points_penalty,
-						'Total Points to Date' => $resource->latest_score->total_points,
+						'Team' => $resource->team_name,
+						"Game-week $latestGw Points" => $resource->latest_points,
+						'Total Points to Date' => $resource->total_points,
 						'Created' => $resource->created_at->toDateTimeString(),
 						'Last Updated' => $resource->updated_at->toDateTimeString(),
 					];
@@ -128,9 +128,7 @@ class ResourceExporter
 				$playerDetails[] = [
 					'Name' => $resource->name,
 					'FPL ID' => $resource->fpl_id,
-					'Team Name' => $resource->team_name,
-					'Latest Score' => $resource->latest_score->net_points,
-					'Total Points' => $resource->latest_score->total_points,
+					'Team' => $resource->team_name,
 					'First Fetched' => $resource->created_at->toDateTimeString(),
 					'Last Fetched' => $resource->updated_at->toDateTimeString(),
 				];

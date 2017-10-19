@@ -41,7 +41,7 @@ const AppListScreenPlugin = {
                         { text: '25', value: 25} ,
                         { text: '50', value: 50 },
                         { text: '100', value: 100 },
-                        { text: '500', value: 500 }
+                        { text: '500', value: 500 },
                     ],
                     appSearchText: '',
                     appSearching: false,
@@ -100,6 +100,12 @@ const AppListScreenPlugin = {
 
                     if ( vm.appSearchText.length )
                         params.search = vm.appSearchText;
+
+                    if ( typeof vm.startGw !== 'undefined' ) {
+                        params.startGw = parseInt(vm.startGw);
+                        params.endGw = ( typeof vm.endGw === 'undefined' ) ? vm.startGw + 4 : parseInt(vm.endGw);
+
+                    }
 
                     progress.start();
                     vm.appSelectAll = false;

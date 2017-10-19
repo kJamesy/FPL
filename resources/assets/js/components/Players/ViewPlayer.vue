@@ -16,10 +16,6 @@
                     <div class="col-sm-10">{{ resource.team_name }}</div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-2 text-sm-right font-weight-bold">Total Points:</div>
-                    <div class="col-sm-10">{{ resource.latest_score.total_points }}</div>
-                </div>
-                <div class="row">
                     <div class="col-sm-2 text-sm-right font-weight-bold" title="These are the leagues that have been fetched from fantasypremierleague.com" data-toggle="tooltip">Leagues:</div>
                     <div class="col-sm-10" v-html="flattenedLeagues"></div>
                 </div>

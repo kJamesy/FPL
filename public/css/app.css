@@ -10105,6 +10105,10 @@ label.custom-control {
   margin-bottom: 0;
 }
 
+.vue-slider-component .vue-slider-tooltip {
+  border-radius: 0 !important;
+}
+
 .pagination li a {
   position: relative;
   display: block;

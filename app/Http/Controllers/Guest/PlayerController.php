@@ -45,7 +45,7 @@ class PlayerController extends Controller
 		$this->permissionsKey = UserPermissions::getModelShortName($this->policyOwnerClass);
 		$this->friendlyName = 'Player';
 		$this->friendlyNamePlural = 'Players';
-		$this->latestGameWeek = Score::findLatestScoredGameWeek();
+		$this->latestGameWeek = Score::findLatestGameWeek();
 	}
 
 	/**
