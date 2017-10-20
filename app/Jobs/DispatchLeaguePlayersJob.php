@@ -36,7 +36,7 @@ class DispatchLeaguePlayersJob implements ShouldQueue
     {
 	    League::chunk(500, function($leagues) {
 		    foreach( $leagues as $league )
-			    FetchLeaguePlayers::dispatch($league);
+			    FetchLeaguePlayers::dispatch($league)->onQueue('high');
 	    });
     }
 

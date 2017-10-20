@@ -35,7 +35,7 @@ class DispatchPlayerScoresJob implements ShouldQueue
     {
 	    Player::chunk(500, function($players) {
 		    foreach( $players as $player )
-			    StorePlayerScores::dispatch($player);
+			    StorePlayerScores::dispatch($player)->onQueue('high');
 	    });
     }
 }
