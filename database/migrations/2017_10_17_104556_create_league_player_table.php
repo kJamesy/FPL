@@ -14,7 +14,7 @@ class CreateLeaguePlayerTable extends Migration
     public function up()
     {
         Schema::create('league_player', function (Blueprint $table) {
-	        $table->increments('id');
+//	        $table->increments('id');
 	        $table->integer('league_id')->unsigned();
 	        $table->integer('player_id')->unsigned();
 
