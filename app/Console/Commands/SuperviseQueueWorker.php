@@ -66,7 +66,7 @@ class SuperviseQueueWorker extends Command
      */
     protected function startWorker()
     {
-        $command = "php " . base_path() . "/artisan queue:work > /dev/null & echo $!";
+        $command = "php " . base_path() . "/artisan queue:work --queue=high,medium,low > /dev/null & echo $!";
         return exec($command); //PID
     }
 

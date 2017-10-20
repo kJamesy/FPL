@@ -35,12 +35,6 @@ Route::group(['prefix' => 'lab'], function() {
 //	    ->where('scores.gameweek', \Illuminate\Support\Facades\DB::raw("(select max(`game_week`) from `scores`)"))
 
 //	    var_dump(\App\Score::first());
-
-	    $players = \App\Score::getSearchResults('Nihad', 2, 1, 4);
-
-	    foreach( $players as $player) {
-	    	var_dump( $player);
-	    }
     });
 
     Route::get('worker', function() {
