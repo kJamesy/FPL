@@ -77,7 +77,7 @@ class League extends Model
         $searchQuery->limit = 5000;
         $results = $searchQuery->get()->pluck('id');
 
-        $query = static::whereIn('id', $results);
+        $query = static::withCount('players')->whereIn('id', $results);
 
         return $query->paginate($paginate);
     }

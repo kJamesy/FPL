@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Guest;
 
+use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -14,7 +15,9 @@ class LabController extends Controller
 
 		function fetchScore($fpl_id, $game_week)
 		{
-			$client = new \GuzzleHttp\Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]]);
+			$client = ( env('APP_ENV', 'production') === 'local')
+				? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
+				: new Client();
 
 			try {
 				$res = $client->get("https://fantasy.premierleague.com/drf/entry/{$fpl_id}/event/{$game_week}/picks");
@@ -65,7 +68,9 @@ class LabController extends Controller
 
 		function fetchPlayer($playerData)
 		{
-			$client = new \GuzzleHttp\Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]]);
+			$client = ( env('APP_ENV', 'production') === 'local')
+				? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
+				: new Client();
 
 			try {
 				$res = $client->get("https://fantasy.premierleague.com/drf/entry/{$playerData->entry}");
@@ -87,7 +92,9 @@ class LabController extends Controller
 
 		function fetchLeague($fpl_id, $pageNum)
 		{
-			$client = new \GuzzleHttp\Client();
+			$client = ( env('APP_ENV', 'production') === 'local')
+				? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
+				: new Client();
 
 			try {
 				$res = $client->get('https://fantasy.premierleague.com/drf/leagues-classic-standings/' . (int) $fpl_id . '?ls-page=' . (int) $pageNum);

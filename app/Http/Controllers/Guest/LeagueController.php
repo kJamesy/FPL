@@ -95,7 +95,9 @@ class LeagueController extends Controller
 
             $this->validate($request, $this->rules);
 
-            $client = new Client();
+	        $client = ( env('APP_ENV', 'production') === 'local')
+		        ? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
+		        : new Client();
 
             try {
                 $res = $client->get('https://fantasy.premierleague.com/drf/leagues-classic-standings/' . (int) $request->fpl_id);
@@ -148,7 +150,9 @@ class LeagueController extends Controller
      */
     protected function fetchPlayer($fpl_id)
     {
-        $client = new Client();
+	    $client = ( env('APP_ENV', 'production') === 'local')
+		    ? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
+		    : new Client();
 
         try {
             $res = $client->get("https://fantasy.premierleague.com/drf/entry/{$fpl_id}");

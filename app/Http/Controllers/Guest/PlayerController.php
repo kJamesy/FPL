@@ -103,7 +103,9 @@ class PlayerController extends Controller
 
 			$this->validate($request, $this->rules);
 
-			$client = new Client();
+			$client = ( env('APP_ENV', 'production') === 'local')
+				? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
+				: new Client();
 
 			try {
 				$fpl_id = (int) $request->fpl_id;

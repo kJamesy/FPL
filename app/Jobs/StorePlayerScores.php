@@ -41,9 +41,8 @@ class StorePlayerScores implements ShouldQueue
      */
     public function handle()
     {
-        if ( $this->player ) {
+        if ( $this->player )
             $this->refetchPlayer($this->player);
-        }
     }
 
 
@@ -54,7 +53,9 @@ class StorePlayerScores implements ShouldQueue
      */
     protected function refetchPlayer($player)
     {
-        $client = new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]]);
+        $client = ( env('APP_ENV', 'production') === 'local')
+	        ? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
+	        : new Client();
 
         try {
             $res = $client->get("https://fantasy.premierleague.com/drf/entry/{$player->fpl_id}");
@@ -113,7 +114,9 @@ class StorePlayerScores implements ShouldQueue
      */
     protected function fetchScore($fpl_id, $game_week)
     {
-        $client = new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]]);
+	    $client = ( env('APP_ENV', 'production') === 'local')
+		    ? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
+		    : new Client();
 
         try {
             $res = $client->get("https://fantasy.premierleague.com/drf/entry/{$fpl_id}/event/{$game_week}/picks");

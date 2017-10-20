@@ -47,7 +47,9 @@ class FetchLeaguePlayers implements ShouldQueue
 	 */
 	protected function fetchLeague($id, $fpl_id, $page_num)
 	{
-		$client = new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]]);
+		$client = ( env('APP_ENV', 'production') === 'local')
+			? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
+			: new Client();
 
 		try {
 			$res = $client->get('https://fantasy.premierleague.com/drf/leagues-classic-standings/' . (int) $fpl_id . '?ls-page=' . (int) $page_num);
