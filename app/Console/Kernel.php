@@ -29,7 +29,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('supervise:queue-worker')->everyMinute();
 //        $schedule->job(new DispatchLeaguePlayersJob())->dailyAt('23:00');
 //        $schedule->job(new DispatchPlayerScoresJob())->dailyAt('05:00');
-        $schedule->job(new DispatchLeaguePlayersJob())->dailyAt('17:22');
+        $schedule->job(new DispatchLeaguePlayersJob())->dailyAt('16:22');
     }
 
     /**
