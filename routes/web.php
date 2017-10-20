@@ -30,8 +30,6 @@ Route::group(['prefix' => 'lab'], function() {
         // 428936
         // 360101
         // 695687
-
-
     });
 
     Route::get('worker', function() {
