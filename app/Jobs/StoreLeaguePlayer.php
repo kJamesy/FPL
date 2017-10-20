@@ -51,11 +51,9 @@ class StoreLeaguePlayer implements ShouldQueue
 			        $player->team_name = $team_name;
 			        $player->save();
 
-			        if ( $player->leagues ) {
-				        if ( ! in_array( $this->leagueId, $player->leagues->pluck( 'id' )->toArray() ) ) {
-					        $player->leagues()->attach( $this->leagueId );
-					        $player->touch();
-				        }
+			        if ( ! in_array($this->leagueId, $player->leagues->pluck('id')->toArray()) ) {
+				        $player->leagues()->attach($this->leagueId);
+				        $player->touch();
 			        }
 
 			        StorePlayerScores::dispatch($player)->onQueue('low');
