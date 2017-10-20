@@ -31,10 +31,7 @@ Route::group(['prefix' => 'lab'], function() {
         // 360101
         // 695687
 
-//	    $players = \App\Player::join('scores', 'scores.player_id', '=', 'players.id')
-//	    ->where('scores.gameweek', \Illuminate\Support\Facades\DB::raw("(select max(`game_week`) from `scores`)"))
 
-//	    var_dump(\App\Score::first());
     });
 
     Route::get('worker', function() {

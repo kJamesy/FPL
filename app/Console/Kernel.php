@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Jobs\DispatchLeaguePlayersJob;
+use App\Jobs\DispatchPlayerScoresJob;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -25,6 +27,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('supervise:queue-worker')->everyMinute();
+//        $schedule->job(new DispatchLeaguePlayersJob())->dailyAt('23:00');
+//        $schedule->job(new DispatchPlayerScoresJob())->dailyAt('05:00');
+        $schedule->job(new DispatchLeaguePlayersJob())->dailyAt('17:22');
     }
 
     /**
