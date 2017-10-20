@@ -24,12 +24,13 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
+
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('supervise:queue-worker')->everyMinute();
-//        $schedule->job(new DispatchLeaguePlayersJob())->dailyAt('23:00');
-//        $schedule->job(new DispatchPlayerScoresJob())->dailyAt('05:00');
-        $schedule->job(new DispatchLeaguePlayersJob())->dailyAt('16:34');
+        $schedule->job(new DispatchLeaguePlayersJob())->dailyAt('23:00');
+        $schedule->job(new DispatchPlayerScoresJob())->dailyAt('05:00');
+//        $schedule->job(new DispatchLeaguePlayersJob())->dailyAt('16:34');
     }
 
     /**
