@@ -38,6 +38,7 @@ class TruncateDatabaseTables extends Command
         $this->tables = [
             'leagues',
             'players',
+	        'league_player',
             'scores',
             'jobs',
             'failed_jobs',
