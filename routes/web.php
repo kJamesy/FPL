@@ -84,7 +84,7 @@ Route::group(['prefix' => 'guest', 'namespace' => 'Guest', 'middleware' => ['aut
 	    Route::get('players/export', 'PlayerController@export');
 	    Route::get('players/{id}/export-single', 'PlayerController@exportSingle');
 	    Route::get('players/{vue?}', 'PlayerController@index');
-	    Route::get('scores/export', 'ScoreController@export');
+	    Route::get('scores/{id}/export-single', 'PlayerController@exportSingle');
 	    Route::get('scores/{vue?}', 'ScoreController@index');
     }
 

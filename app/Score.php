@@ -43,15 +43,30 @@ class Score extends Model
 		});
 	}
 
+	/**
+	 * Get all resources
+	 * @param int $leagueId
+	 * @param array $selected
+	 * @param int $start_gw
+	 * @param int $end_gw
+	 * @param string $orderBy
+	 * @param string $order
+	 * @param null $paginate
+	 *
+	 * @return mixed
+	 */
 	public static function getResources($leagueId = 0, $selected = [], $start_gw = 1, $end_gw = 4, $orderBy = 'name', $order = 'desc', $paginate = null)
 	{
+		$latestGw = static::findLatestGameWeek();
+
 		$query = Player::join('scores', 'scores.player_id', '=', 'players.id');
 		$rawQuery = '';
 
 		for ( $i = $start_gw; $i <= $end_gw; $i++ )
 			$rawQuery .= "COALESCE((SELECT net_points FROM scores WHERE game_week = $i AND player_id = players.id), 0) AS game_week_$i,";
 
-		$rawQuery .= "CAST((SELECT COALESCE(SUM(net_points), 0) FROM scores WHERE (game_week BETWEEN $start_gw AND $end_gw) AND player_id = players.id) AS UNSIGNED) AS period_total";
+		$rawQuery .= "CAST((SELECT COALESCE(SUM(net_points), 0) FROM scores WHERE (game_week BETWEEN $start_gw AND $end_gw) AND player_id = players.id) AS UNSIGNED) AS period_total,";
+		$rawQuery .= "CAST((SELECT COALESCE(total_points, 0) FROM scores WHERE game_week = $latestGw AND player_id = players.id) AS UNSIGNED) AS total_points";
 
 		$query->select('players.*', DB::raw($rawQuery));
 
@@ -80,6 +95,8 @@ class Score extends Model
 	 */
 	public static function getSearchResults($search, $leagueId = 0, $start_gw = 1, $end_gw = 4, $paginate = 25)
 	{
+		$latestGw = static::findLatestGameWeek();
+
 		$searchQuery = Player::search($search);
 		$searchQuery->limit = 5000;
 		$results = $searchQuery->get()->pluck('id');
@@ -90,7 +107,8 @@ class Score extends Model
 		for ( $i = $start_gw; $i <= $end_gw; $i++ )
 			$rawQuery .= "COALESCE((SELECT net_points FROM scores WHERE game_week = $i AND player_id = players.id), 0) AS game_week_$i,";
 
-		$rawQuery .= "CAST((SELECT COALESCE(SUM(net_points), 0) FROM scores WHERE (game_week BETWEEN $start_gw AND $end_gw) AND player_id = players.id) AS UNSIGNED) AS period_total";
+		$rawQuery .= "CAST((SELECT COALESCE(SUM(net_points), 0) FROM scores WHERE (game_week BETWEEN $start_gw AND $end_gw) AND player_id = players.id) AS UNSIGNED) AS period_total,";
+		$rawQuery .= "CAST((SELECT COALESCE(total_points, 0) FROM scores WHERE game_week = $latestGw AND player_id = players.id) AS UNSIGNED) AS total_points";
 
 		$query->select('players.*', DB::raw($rawQuery));
 

@@ -77,7 +77,7 @@
                                 <td>{{ resource.name }}</td>
                                 <td>{{ resource.fpl_id }}</td>
                                 <td>{{ resource.team_name }}</td>
-                                <td>{{ resource.latest_points }}</td>
+                                <td><a v-bind:href="getFPLTeamUrl(latestGameWeek, resource.fpl_id)" target="_blank">{{ resource.latest_points }}</a></td>
                                 <td>{{ resource.total_points }}</td>
                                 <td><span v-bind:title="resource.updated_at | dateToTheMinWithDayOfWeek" data-toggle="tooltip">{{ resource.updated_at | dateToTheDay }}</span></td>
                                 <td v-if="appUserHasPermission('read')">
@@ -157,6 +157,9 @@
                 vm.$on('successfulfetch', function () {
                     vm.setOtherData();
                 });
+            },
+            getFPLTeamUrl(gW, fplId) {
+                return "https://fantasy.premierleague.com/a/team/" + fplId + "/event/" + gW;
             }
         },
         watch: {

@@ -158,6 +158,7 @@ if ( $('#players-app').length ) {
  */
 import Scores from './components/Scores/Scores.vue';
 import ScoresAll from './components/Scores/AllScores.vue';
+import ScoresView from './components/Scores/ViewScores.vue';
 
 if ( $('#scores-app').length ) {
     let router = new VueRouter({
@@ -168,6 +169,7 @@ if ( $('#scores-app').length ) {
             { path: '/', name: 'scores.index', component: ScoresAll },
             { path: '/:leagueId(\\d+)/in-league', name: 'scores.list', component: ScoresAll },
             { path: '/unattached', name: 'scores.unattached', component: ScoresAll },
+            { path: '/:id(\\d+)/view', name: 'scores.view', component: ScoresView },
             { path: '*', redirect: { name: 'scores.index' } }
         ]
     });

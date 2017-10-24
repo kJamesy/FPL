@@ -30,9 +30,9 @@
                 <div class="row mt-5 mb-5">
                     <div class="col-md-6">
                         <vue-slider ref="slider" v-model="sliderRange"
-                                    :min="1" :max="latestGw" :formatter='"GW {value}"' :dotSize="18" :lazy="true"
+                                    :min="1" :max="latestGw" :formatter='"GW {value}"' :dotSize="22" :lazy="true"
                                     :piecewise="true" :piecewiseStyle="sliderPiecewiseStyle" :piecewiseActiveStyle="sliderPiecewiseActiveStyle"
-                                    :bgStyle="sliderBgStyle" :processStyle="sliderProcessStyle" :tooltipStyle="sliderTooltipStyle" :height="10"></vue-slider>
+                                    :bgStyle="sliderBgStyle" :processStyle="sliderProcessStyle" :tooltipStyle="sliderTooltipStyle" :height="12"></vue-slider>
                     </div>
                 </div>
                 <div class="mt-5 mb-4">
@@ -72,8 +72,9 @@
                                     <th v-on:click.prevent="appChangeSort(heading.key)">{{ heading.value }} <span v-html="appGetSortMarkup(heading.key)"></span></th>
                                 </template>
                                 <th v-on:click.prevent="appChangeSort('period_total')" >Period Total <span v-html="appGetSortMarkup('period_total')"></span></th>
+                                <th v-on:click.prevent="appChangeSort('total_points')" >Total Points <span v-html="appGetSortMarkup('total_points')"></span></th>
                                 <th v-on:click.prevent="appChangeSort('updated_at')" >Updated <span v-html="appGetSortMarkup('updated_at')"></span></th>
-                                <!--<th v-if="appUserHasPermission('update')"></th>-->
+                                <th v-if="appUserHasPermission('read')"></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -88,13 +89,14 @@
                                 <td>{{ resource.fpl_id }}</td>
                                 <td>{{ resource.team_name }}</td>
                                 <template v-for="heading in gwHeadings">
-                                    <td>{{ resource[heading.key] }}</td>
+                                    <td><a v-bind:href="getFPLTeamUrl(heading.num, resource.fpl_id)" target="_blank">{{ resource[heading.key] }}</a></td>
                                 </template>
                                 <td>{{ resource.period_total }}</td>
+                                <td>{{ resource.total_points }}</td>
                                 <td><span v-bind:title="resource.updated_at | dateToTheMinWithDayOfWeek" data-toggle="tooltip">{{ resource.updated_at | dateToTheDay }}</span></td>
-                                <!--<td v-if="appUserHasPermission('read')">-->
-                                    <!--<router-link v-bind:to="{ name: 'players.view', params: { id: resource.id }}" class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></router-link>-->
-                                <!--</td>-->
+                                <td v-if="appUserHasPermission('read')">
+                                    <router-link v-bind:to="{ name: 'scores.view', params: { id: resource.id }}" class="btn btn-sm btn-outline-primary"><i class="fa fa-eye"></i></router-link>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -148,7 +150,7 @@
                 let i = vm.startGw;
 
                 while ( i <= vm.endGw ) {
-                    headings.push({'key': 'game_week_' + i, 'value': 'GW ' + i});
+                    headings.push({'key': 'game_week_' + i, 'value': 'GW ' + i, num: i});
                     i++;
                 }
 
@@ -247,6 +249,9 @@
                     }
                 }
 
+            },
+            getFPLTeamUrl(gW, fplId) {
+                return "https://fantasy.premierleague.com/a/team/" + fplId + "/event/" + gW;
             }
         },
         watch: {
@@ -262,6 +267,9 @@
             },
             sliderRange(newVal, oldVal) {
                 let vm = this;
+
+                if ( (newVal[0] + 3) < newVal[1] )
+                    newVal[0] = newVal[1] - 3;
 
                 if ( ! _.isEqual(newVal, oldVal) ) {
                     vm.startGw = newVal[0];

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Guest;
 
 use App\League;
 use App\Permissions\UserPermissions;
+use App\Player;
 use App\Score;
 use App\Settings\UserSettings;
 use Illuminate\Http\Request;
@@ -52,7 +53,7 @@ class ScoreController extends Controller
 	 */
 	protected function defineOrderByFields()
 	{
-		$fields = ['fpl_id', 'name', 'team_name', 'period_total', 'created_at', 'updated_at'];
+		$fields = ['fpl_id', 'name', 'team_name', 'period_total', 'total_points', 'created_at', 'updated_at'];
 
 		for ( $i = 1; $i <= 38; $i++ )
 			$fields[] = "game_week_$i";
@@ -112,69 +113,27 @@ class ScoreController extends Controller
 		}
 	}
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+	/**
+	 * Show specified resource
+	 * @param $id
+	 * @param Request $request
+	 * @return \Illuminate\Http\JsonResponse
+	 */
+	public function show($id, Request $request)
+	{
+		$resource = Player::findResource( (int) $id );
+		$leaguesUrl = route('leagues.index');
+		$currentUser = $request->user();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+		if ( $resource ) {
+			if ( ! $currentUser->can('read', $this->policyOwnerClass) )
+				return response()->json(['error' => 'You are not authorised to perform this action.'], 403);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+			$resource->leaguesUrl = $leaguesUrl;
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+			return response()->json(compact('resource'));
+		}
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+		return response()->json(['error' => "$this->friendlyName does not exist"], 404);
+	}
 }
