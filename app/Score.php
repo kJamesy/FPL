@@ -65,7 +65,7 @@ class Score extends Model
 		for ( $i = $start_gw; $i <= $end_gw; $i++ )
 			$rawQuery .= "COALESCE((SELECT net_points FROM scores WHERE game_week = $i AND player_id = players.id), 0) AS game_week_$i,";
 
-		$rawQuery .= "CAST((SELECT COALESCE(SUM(net_points), 0) FROM scores WHERE (game_week BETWEEN $start_gw AND $end_gw) AND player_id = players.id) AS UNSIGNED) AS period_total,";
+		$rawQuery .= "CAST((SELECT COALESCE(SUM(net_points), 0) FROM scores WHERE (game_week BETWEEN $start_gw AND $end_gw) AND player_id = players.id) AS SIGNED) AS period_total,";
 		$rawQuery .= "CAST((SELECT COALESCE(total_points, 0) FROM scores WHERE game_week = $latestGw AND player_id = players.id) AS UNSIGNED) AS total_points";
 
 		$query->select('players.*', DB::raw($rawQuery));
@@ -107,7 +107,7 @@ class Score extends Model
 		for ( $i = $start_gw; $i <= $end_gw; $i++ )
 			$rawQuery .= "COALESCE((SELECT net_points FROM scores WHERE game_week = $i AND player_id = players.id), 0) AS game_week_$i,";
 
-		$rawQuery .= "CAST((SELECT COALESCE(SUM(net_points), 0) FROM scores WHERE (game_week BETWEEN $start_gw AND $end_gw) AND player_id = players.id) AS UNSIGNED) AS period_total,";
+		$rawQuery .= "CAST((SELECT COALESCE(SUM(net_points), 0) FROM scores WHERE (game_week BETWEEN $start_gw AND $end_gw) AND player_id = players.id) AS SIGNED) AS period_total,";
 		$rawQuery .= "CAST((SELECT COALESCE(total_points, 0) FROM scores WHERE game_week = $latestGw AND player_id = players.id) AS UNSIGNED) AS total_points";
 
 		$query->select('players.*', DB::raw($rawQuery));
