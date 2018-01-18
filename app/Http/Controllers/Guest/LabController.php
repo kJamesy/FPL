@@ -15,13 +15,22 @@ class LabController extends Controller
 
 		function fetchScore($fpl_id, $game_week)
 		{
-			$client = ( env('APP_ENV', 'production') === 'local')
-				? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
-				: new Client();
+//			$client = ( env('APP_ENV', 'production') === 'local')
+//				? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
+//				: new Client();
 
 			try {
-				$res = $client->get("https://fantasy.premierleague.com/drf/entry/{$fpl_id}/event/{$game_week}/picks");
-				$fetch = json_decode($res->getBody());
+//				$res = $client->get("https://fantasy.premierleague.com/drf/entry/{$fpl_id}/event/{$game_week}/picks");
+//				$fetch = json_decode($res->getBody());
+
+				$curl = curl_init();
+				curl_setopt($curl, CURLOPT_URL, "https://fantasy.premierleague.com/drf/entry/{$fpl_id}/event/{$game_week}/picks");
+
+				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+				$response = curl_exec($curl);
+				curl_close($curl);
+
+				$fetch = json_decode($response);
 
 				if ( is_object($fetch) ) {
 					if ( property_exists($fetch, 'entry_history') ) {
@@ -68,13 +77,22 @@ class LabController extends Controller
 
 		function fetchPlayer($playerData)
 		{
-			$client = ( env('APP_ENV', 'production') === 'local')
-				? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
-				: new Client();
+//			$client = ( env('APP_ENV', 'production') === 'local')
+//				? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
+//				: new Client();
 
 			try {
-				$res = $client->get("https://fantasy.premierleague.com/drf/entry/{$playerData->entry}");
-				$fetch = json_decode($res->getBody());
+//				$res = $client->get("https://fantasy.premierleague.com/drf/entry/{$playerData->entry}");
+//				$fetch = json_decode($res->getBody());
+
+				$curl = curl_init();
+				curl_setopt($curl, CURLOPT_URL, "https://fantasy.premierleague.com/drf/entry/{$playerData->entry}");
+
+				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+				$response = curl_exec($curl);
+				curl_close($curl);
+
+				$fetch = json_decode($response);
 
 				if ( is_object($fetch) ) {
 					if ( property_exists($fetch, 'entry') ) {
@@ -92,13 +110,22 @@ class LabController extends Controller
 
 		function fetchLeague($fpl_id, $pageNum)
 		{
-			$client = ( env('APP_ENV', 'production') === 'local')
-				? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
-				: new Client();
+//			$client = ( env('APP_ENV', 'production') === 'local')
+//				? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
+//				: new Client();
 
 			try {
-				$res = $client->get('https://fantasy.premierleague.com/drf/leagues-classic-standings/' . (int) $fpl_id . '?ls-page=' . (int) $pageNum);
-				$fetch = json_decode($res->getBody());
+//				$res = $client->get('https://fantasy.premierleague.com/drf/leagues-classic-standings/' . (int) $fpl_id . '?ls-page=' . (int) $pageNum);
+//				$fetch = json_decode($res->getBody());
+
+				$curl = curl_init();
+				curl_setopt($curl, CURLOPT_URL, 'https://fantasy.premierleague.com/drf/leagues-classic-standings/' . (int) $fpl_id . '?ls-page=' . (int) $pageNum);
+
+				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+				$response = curl_exec($curl);
+				curl_close($curl);
+
+				$fetch = json_decode($response);
 
 				if ( is_object($fetch) ) {
 

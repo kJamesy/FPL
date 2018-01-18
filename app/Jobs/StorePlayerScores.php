@@ -53,13 +53,21 @@ class StorePlayerScores implements ShouldQueue
      */
     protected function refetchPlayer($player)
     {
-        $client = ( env('APP_ENV', 'production') === 'local')
-	        ? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
-	        : new Client();
+//        $client = ( env('APP_ENV', 'production') === 'local')
+//	        ? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
+//	        : new Client();
 
         try {
-            $res = $client->get("https://fantasy.premierleague.com/drf/entry/{$player->fpl_id}");
-            $fetch = json_decode($res->getBody());
+//            $res = $client->get("https://fantasy.premierleague.com/drf/entry/{$player->fpl_id}");
+//            $fetch = json_decode($res->getBody());
+	        $curl = curl_init();
+	        curl_setopt($curl, CURLOPT_URL, "https://fantasy.premierleague.com/drf/entry/{$player->fpl_id}");
+
+	        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+	        $response = curl_exec($curl);
+	        curl_close($curl);
+
+	        $fetch = json_decode($response);
 
             if ( is_object($fetch) ) {
                 if ( property_exists($fetch, 'entry') ) {
@@ -114,13 +122,22 @@ class StorePlayerScores implements ShouldQueue
      */
     protected function fetchScore($fpl_id, $game_week)
     {
-	    $client = ( env('APP_ENV', 'production') === 'local')
-		    ? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
-		    : new Client();
+//	    $client = ( env('APP_ENV', 'production') === 'local')
+//		    ? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
+//		    : new Client();
 
         try {
-            $res = $client->get("https://fantasy.premierleague.com/drf/entry/{$fpl_id}/event/{$game_week}/picks");
-            $fetch = json_decode($res->getBody());
+//            $res = $client->get("https://fantasy.premierleague.com/drf/entry/{$fpl_id}/event/{$game_week}/picks");
+//            $fetch = json_decode($res->getBody());
+
+	        $curl = curl_init();
+	        curl_setopt($curl, CURLOPT_URL, "https://fantasy.premierleague.com/drf/entry/{$fpl_id}/event/{$game_week}/picks");
+
+	        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+	        $response = curl_exec($curl);
+	        curl_close($curl);
+
+	        $fetch = json_decode($response);
 
             if ( is_object($fetch) ) {
                 if ( property_exists($fetch, 'entry_history') ) {

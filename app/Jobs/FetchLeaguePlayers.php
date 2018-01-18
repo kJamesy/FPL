@@ -47,13 +47,22 @@ class FetchLeaguePlayers implements ShouldQueue
 	 */
 	protected function fetchLeague($id, $fpl_id, $page_num)
 	{
-		$client = ( env('APP_ENV', 'production') === 'local')
-			? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
-			: new Client();
+//		$client = ( env('APP_ENV', 'production') === 'local')
+//			? new Client(['curl' => [CURLOPT_SSL_VERIFYPEER => false]])
+//			: new Client();
 
 		try {
-			$res = $client->get('https://fantasy.premierleague.com/drf/leagues-classic-standings/' . (int) $fpl_id . '?ls-page=' . (int) $page_num);
-			$fetch = json_decode($res->getBody());
+//			$res = $client->get('https://fantasy.premierleague.com/drf/leagues-classic-standings/' . (int) $fpl_id . '?ls-page=' . (int) $page_num);
+//			$fetch = json_decode($res->getBody());
+
+			$curl = curl_init();
+			curl_setopt($curl, CURLOPT_URL, 'https://fantasy.premierleague.com/drf/leagues-classic-standings/' . (int) $fpl_id . '?ls-page=' . (int) $page_num);
+
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+			$response = curl_exec($curl);
+			curl_close($curl);
+
+			$fetch = json_decode($response);
 
 			if ( is_object($fetch) ) {
 
